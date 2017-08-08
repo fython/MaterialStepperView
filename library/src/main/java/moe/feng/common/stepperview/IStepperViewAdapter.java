@@ -1,15 +1,18 @@
 package moe.feng.common.stepperview;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 
-interface IStepperViewAdapter {
+public interface IStepperViewAdapter {
 
 	String getTitle(int index);
 
+	String getSummary(int index);
+
 	int size();
 
-	void onCreateView(int index, Context context, ViewGroup parent);
+	View onCreateCustomView(int index, Context context, VerticalStepperItemView parent);
 
 	void onShow(int index);
 

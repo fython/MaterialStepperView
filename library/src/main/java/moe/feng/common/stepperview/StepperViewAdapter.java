@@ -35,8 +35,8 @@ public abstract class StepperViewAdapter implements IStepperViewAdapter {
 	}
 
 	@Override
-	public void onCreateView(int index, Context context, ViewGroup parent) {
-		parent.addView(mViews[index]);
+	public View onCreateCustomView(int index, Context context, VerticalStepperItemView parent) {
+		return mViews[index];
 	}
 
 }

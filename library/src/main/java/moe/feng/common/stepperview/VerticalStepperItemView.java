@@ -103,6 +103,10 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 	}
 
+	public void removeCustomView() {
+		mCustomView.removeAllViews();
+	}
+
 	private void prepareViews(Context context) {
 		// Inflate and find views
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

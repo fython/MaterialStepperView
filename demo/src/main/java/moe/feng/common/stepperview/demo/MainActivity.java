@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import moe.feng.common.stepperview.demo.fragment.VerticalStepperAdapterDemoFragment;
 import moe.feng.common.stepperview.demo.fragment.VerticalStepperDemoFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -16,7 +17,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	private DrawerLayout mDrawerLayout;
 	private NavigationView mNavigationView;
 
-	private Fragment mVerticalStepperDemoFragment = new VerticalStepperDemoFragment();
+	private Fragment mVerticalStepperDemoFragment = new VerticalStepperDemoFragment(),
+			mVerticalStepperAdapterDemoFragment = new VerticalStepperAdapterDemoFragment();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 			case R.id.item_vertical_stepper:
 				getSupportFragmentManager().beginTransaction()
 						.replace(R.id.container, mVerticalStepperDemoFragment).commit();
+				return true;
+			case R.id.item_vertical_stepper_adapter:
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.container, mVerticalStepperAdapterDemoFragment).commit();
 				return true;
 			default:
 				return false;

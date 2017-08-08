@@ -8,6 +8,10 @@
 			  android:icon="@drawable/ic_format_list_bulleted_black_24dp"
 			  android:checked="true"/>
 
+		<item android:id="@+id/item_vertical_stepper_adapter"
+		      android:title="@string/item_vertical_stepper_adapter"
+		      android:icon="@drawable/ic_format_list_bulleted_black_24dp"/>
+
 	</group>
 
 </menu>
