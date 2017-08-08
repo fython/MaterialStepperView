@@ -2,7 +2,6 @@ package moe.feng.common.stepperview;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
 
 public abstract class StepperViewAdapter implements IStepperViewAdapter {
 
@@ -22,11 +21,6 @@ public abstract class StepperViewAdapter implements IStepperViewAdapter {
 
 	public View getView(int index) {
 		return mViews[index];
-	}
-
-	@Override
-	public String getTitle(int index) {
-		return "Step " + index;
 	}
 
 	@Override

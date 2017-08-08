@@ -67,7 +67,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		mListView.setLayoutManager(new LinearLayoutManager(context));
 		mListView.setAdapter(mAdapter);
 
-		addView(mListView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		addView(mListView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
 	public void setViewAdapter(IStepperViewAdapter viewAdapter) {
@@ -90,7 +90,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	public boolean nextStep() {
 		if (canNext()) {
 			mCurrentStep++;
-			mAdapter.notifyDataSetChanged();
+			mAdapter.notifyItemRangeChanged(mCurrentStep - 1, 2);
 			return true;
 		}
 		return false;
@@ -99,7 +99,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	public boolean prevStep() {
 		if (canPrev()) {
 			mCurrentStep--;
-			mAdapter.notifyDataSetChanged();
+			mAdapter.notifyItemRangeChanged(mCurrentStep, 2);
 			return true;
 		}
 		return false;
@@ -136,8 +136,11 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	}
 
 	public void setCurrentStep(int currentStep) {
+		int minIndex = Math.min(currentStep, mCurrentStep);
+		int count = Math.abs(mCurrentStep - currentStep) + 1;
+
 		mCurrentStep = currentStep;
-		mAdapter.notifyDataSetChanged();
+		mAdapter.notifyItemRangeChanged(minIndex, count);
 	}
 
 	class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
