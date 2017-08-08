@@ -149,7 +149,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 
 		@Override
 		public void onBindViewHolder(ItemHolder holder, int position) {
-			holder.mItemView.setIndex(position);
+			holder.mItemView.setIndex(position + 1);
 			holder.mItemView.setIsLastStep(position == getItemCount() - 1);
 			holder.mItemView.setTitle(getViewAdapter().getTitle(position));
 			holder.mItemView.setSummary(getViewAdapter().getSummary(position));
