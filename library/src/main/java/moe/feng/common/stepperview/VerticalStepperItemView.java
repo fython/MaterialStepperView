@@ -187,6 +187,10 @@ public class VerticalStepperItemView extends FrameLayout {
 		setTitle(getResources().getString(titleRes));
 	}
 
+	public String getTitle() {
+		return mTitle;
+	}
+
 	public void setSummary(String summary) {
 		mSummary = summary;
 		mSummaryText.setText(summary);
@@ -197,15 +201,27 @@ public class VerticalStepperItemView extends FrameLayout {
 		setSummary(getResources().getString(summaryRes));
 	}
 
+	public String getSummary() {
+		return mSummary;
+	}
+
 	public void setIndex(int index) {
 		mIndex = index;
 		mPointNumber.setText(String.valueOf(index));
+	}
+
+	public int getIndex() {
+		return mIndex;
 	}
 
 	public void setIsLastStep(boolean isLastStep) {
 		this.isLastStep = isLastStep;
 		mLineView.setVisibility(isLastStep ? View.INVISIBLE : View.VISIBLE);
 		updateMarginBottom();
+	}
+
+	public boolean isLastStep() {
+		return isLastStep;
 	}
 
 	public void setShouldAnimateWhenCustomViewShowHide(boolean shouldAnimate) {
@@ -225,8 +241,16 @@ public class VerticalStepperItemView extends FrameLayout {
 		setDoneIcon(getResources().getDrawable(drawableRes));
 	}
 
+	public Drawable getDoneIcon() {
+		return mDoneIcon;
+	}
+
 	public void setAnimationDuration(int duration) {
 		mAnimationDuration = duration;
+	}
+
+	public int getAnimationDuration() {
+		return mAnimationDuration;
 	}
 
 	public void bindSteppers(@Nullable VerticalStepperItemView prevItem, @Nullable VerticalStepperItemView nextItem) {
@@ -290,6 +314,10 @@ public class VerticalStepperItemView extends FrameLayout {
 		setNormalColor(getResources().getColor(colorRes));
 	}
 
+	public @ColorInt int getNormalColor() {
+		return mNormalColor;
+	}
+
 	public void setActivatedColor(@ColorInt int color) {
 		mActivatedColor = color;
 		if (mState != STATE_NORMAL) {
@@ -299,6 +327,10 @@ public class VerticalStepperItemView extends FrameLayout {
 
 	public void setActivatedColorResource(@ColorRes int colorRes) {
 		setActivatedColor(getResources().getColor(colorRes));
+	}
+
+	public @ColorInt int getActivatedColor() {
+		return mActivatedColor;
 	}
 
 	@IntDef({STATE_NORMAL, STATE_SELECTED, STATE_DONE})
