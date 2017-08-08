@@ -30,5 +30,8 @@ dependencies {
 
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:customtabs:$supportLibraryVersion"
+    compile "com.android.support:customtabs:$supportLibraryVersion"
+    compile 'moe.feng:AlipayZeroSdk:1.1'
     compile project(':library')
 }

@@ -14,4 +14,20 @@
 
 	</group>
 
+	<item android:title="About">
+
+		<menu>
+
+			<item android:id="@+id/action_alipay_donate"
+			      android:title="Donate me"
+			      android:icon="@drawable/ic_thumb_up_black_24dp"/>
+
+			<item android:id="@+id/action_fork_on_github"
+			      android:title="Fork on Github"
+			      android:icon="@drawable/ic_open_in_new_black_24dp"/>
+
+		</menu>
+
+	</item>
+
 </menu>
