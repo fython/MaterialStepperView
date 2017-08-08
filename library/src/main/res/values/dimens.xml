@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<dimen name="dp1">1dp</dimen>
+
+	<!-- Stepper View -->
+	<dimen name="stepper_point_size">24dp</dimen>
+	<dimen name="stepper_point_half_size">12dp</dimen>
+	<dimen name="vertical_stepper_point_margin_start">24dp</dimen>
+	<dimen name="vertical_stepper_point_margin_end">12dp</dimen>
+	<dimen name="vertical_stepper_line_margin_top">8dp</dimen>
+
+</resources>

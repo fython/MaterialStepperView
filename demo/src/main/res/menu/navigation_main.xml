@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<group android:checkableBehavior="single">
+
+		<item android:id="@+id/item_vertical_stepper"
+		      android:title="@string/item_vertical_stepper"
+			  android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+			  android:checked="true"/>
+
+	</group>
+
+</menu>

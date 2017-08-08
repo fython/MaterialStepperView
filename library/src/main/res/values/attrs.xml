@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<declare-styleable name="VerticalStepperItemView">
+		<attr name="step_index" format="integer"/>
+		<attr name="step_title" format="string"/>
+		<attr name="step_summary" format="string"/>
+		<attr name="step_is_last" format="boolean"/>
+		<attr name="step_state" format="enum">
+			<enum name="normal" value="0"/>
+			<enum name="selected" value="1"/>
+			<enum name="done" value="2"/>
+		</attr>
+		<attr name="step_normal_color" format="color"/>
+		<attr name="step_activated_color" format="color"/>
+		<attr name="step_done_icon" format="reference"/>
+		<attr name="step_animation_duration" format="integer"/>
+	</declare-styleable>
+	
+</resources>

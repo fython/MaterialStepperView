@@ -1,0 +1,8 @@
+<resources>
+
+	<string name="app_name">StepperView Demo</string>
+
+	<!-- Navigation Menu -->
+	<string name="item_vertical_stepper">Vertical Stepper</string>
+
+</resources>
