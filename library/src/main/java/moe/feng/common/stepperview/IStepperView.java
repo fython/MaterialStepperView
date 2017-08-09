@@ -5,7 +5,7 @@ import android.support.annotation.ColorInt;
 
 interface IStepperView {
 
-	IStepperViewAdapter getViewAdapter();
+	IStepperAdapter getViewAdapter();
 	int getCurrentStep();
 
 	@ColorInt int getNormalColor();

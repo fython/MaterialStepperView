@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import moe.feng.common.stepperview.IStepperViewAdapter;
+import moe.feng.common.stepperview.IStepperAdapter;
 import moe.feng.common.stepperview.VerticalStepperItemView;
 import moe.feng.common.stepperview.VerticalStepperView;
 import moe.feng.common.stepperview.demo.R;
 
-public class VerticalStepperAdapterDemoFragment extends Fragment implements IStepperViewAdapter {
+public class VerticalStepperAdapterDemoFragment extends Fragment implements IStepperAdapter {
 
 	private VerticalStepperView mVerticalStepperView;
 

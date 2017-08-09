@@ -106,6 +106,10 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 	}
 
+	FrameLayout getCustomView() {
+		return mCustomView;
+	}
+
 	public void removeCustomView() {
 		mCustomView.removeAllViews();
 	}

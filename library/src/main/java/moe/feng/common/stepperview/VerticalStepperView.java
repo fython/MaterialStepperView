@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import moe.feng.common.stepperview.internal.VerticalSpaceItemDecoration;
@@ -15,7 +16,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	private RecyclerView mListView;
 	private ItemAdapter mAdapter;
 
-	private IStepperViewAdapter mViewAdapter;
+	private IStepperAdapter mViewAdapter;
 	private int mCurrentStep = 0;
 	private boolean mAnimationEnabled;
 
@@ -74,7 +75,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		addView(mListView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
-	public void setViewAdapter(IStepperViewAdapter viewAdapter) {
+	public void setViewAdapter(IStepperAdapter viewAdapter) {
 		mViewAdapter = viewAdapter;
 		mAdapter.notifyDataSetChanged();
 	}
@@ -118,7 +119,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	}
 
 	@Override
-	public IStepperViewAdapter getViewAdapter() {
+	public IStepperAdapter getViewAdapter() {
 		return mViewAdapter;
 	}
 
@@ -193,7 +194,10 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 				holder.mItemView.setState(VerticalStepperItemView.STATE_SELECTED);
 			}
 			holder.mItemView.removeCustomView();
-			holder.mItemView.addView(getViewAdapter().onCreateCustomView(position, getContext(), holder.mItemView));
+			View customView = getViewAdapter().onCreateCustomView(position, getContext(), holder.mItemView);
+			if (customView != null) {
+				holder.mItemView.addView(customView);
+			}
 		}
 
 		@Override

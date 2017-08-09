@@ -66,12 +66,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		mDrawerLayout.closeDrawer(mNavigationView);
 		switch (item.getItemId()) {
 			case R.id.item_vertical_stepper:
-				getSupportFragmentManager().beginTransaction()
-						.replace(R.id.container, mVerticalStepperDemoFragment).commit();
+				replaceFragment(mVerticalStepperDemoFragment);
 				return true;
 			case R.id.item_vertical_stepper_adapter:
-				getSupportFragmentManager().beginTransaction()
-						.replace(R.id.container, mVerticalStepperAdapterDemoFragment).commit();
+				replaceFragment(mVerticalStepperAdapterDemoFragment);
 				return true;
 			case R.id.action_alipay_donate:
 				if (AlipayZeroSdk.hasInstalledAlipayClient(this)) {
@@ -96,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 			default:
 				return false;
 		}
+	}
+
+	private void replaceFragment(Fragment fragment) {
+		getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 	}
 
 	private void openWebsite(String url) {

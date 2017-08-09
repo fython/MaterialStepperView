@@ -3,15 +3,15 @@ package moe.feng.common.stepperview;
 import android.content.Context;
 import android.view.View;
 
-public abstract class StepperViewAdapter implements IStepperViewAdapter {
+public abstract class ViewBasedStepperAdapter implements IStepperAdapter {
 
 	private View mViews[];
 
-	public StepperViewAdapter() {
+	public ViewBasedStepperAdapter() {
 
 	}
 
-	public StepperViewAdapter(View[] views) {
+	public ViewBasedStepperAdapter(View[] views) {
 		mViews = views;
 	}
 
