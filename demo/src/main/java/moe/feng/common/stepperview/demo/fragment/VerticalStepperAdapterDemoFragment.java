@@ -2,6 +2,8 @@ package moe.feng.common.stepperview.demo.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -26,16 +28,16 @@ public class VerticalStepperAdapterDemoFragment extends Fragment implements ISte
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		mVerticalStepperView = view.findViewById(R.id.vertical_stepper_view);
-		mVerticalStepperView.setViewAdapter(this);
+		mVerticalStepperView.setStepperAdapter(this);
 	}
 
 	@Override
-	public String getTitle(int index) {
+	public @NonNull String getTitle(int index) {
 		return "Step " + index;
 	}
 
 	@Override
-	public String getSummary(int index) {
+	public @Nullable String getSummary(int index) {
 		switch (index) {
 			case 0:
 				return "Summarized if needed";

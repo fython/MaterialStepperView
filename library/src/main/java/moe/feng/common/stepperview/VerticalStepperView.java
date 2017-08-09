@@ -3,6 +3,8 @@ package moe.feng.common.stepperview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -13,13 +15,22 @@ import moe.feng.common.stepperview.internal.VerticalSpaceItemDecoration;
 
 public class VerticalStepperView extends FrameLayout implements IStepperView {
 
+	/**
+	 * Internal view / adapter
+	 */
 	private RecyclerView mListView;
 	private ItemAdapter mAdapter;
 
+	/**
+	 * View State
+	 */
 	private IStepperAdapter mViewAdapter;
 	private int mCurrentStep = 0;
-	private boolean mAnimationEnabled;
 
+	/**
+	 * View attributes
+	 */
+	private boolean mAnimationEnabled;
 	private int mAnimationDuration;
 	private int mNormalColor, mActivatedColor;
 	private Drawable mDoneIcon;
@@ -75,26 +86,53 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		addView(mListView, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
-	public void setViewAdapter(IStepperAdapter viewAdapter) {
-		mViewAdapter = viewAdapter;
+	/**
+	 * Set up the stepper adapter
+	 *
+	 * @param stepperAdapter Stepper Adapter
+	 */
+	public void setStepperAdapter(IStepperAdapter stepperAdapter) {
+		mViewAdapter = stepperAdapter;
 		mAdapter.notifyDataSetChanged();
 	}
 
+	/**
+	 * Return the count of steps
+	 *
+	 * @return The count of steps
+	 */
 	public int getStepCount() {
 		return mViewAdapter != null ? mViewAdapter.size() : 0;
 	}
 
+	/**
+	 * Return if stepper can go next
+	 *
+	 * @return If stepper can go next
+	 */
 	public boolean canNext() {
 		return mViewAdapter != null && mCurrentStep < mViewAdapter.size() - 1;
 	}
 
+	/**
+	 * Return if stepper can go previous
+	 *
+	 * @return If stepper can go previous
+	 */
 	public boolean canPrev() {
 		return mViewAdapter != null && mCurrentStep > 0;
 	}
 
+	/**
+	 * Go next step
+	 *
+	 * @return If success
+	 */
 	public boolean nextStep() {
 		if (canNext()) {
+			mViewAdapter.onHide(mCurrentStep);
 			mCurrentStep++;
+			mViewAdapter.onShow(mCurrentStep);
 			if (mAnimationEnabled) {
 				mAdapter.notifyItemRangeChanged(mCurrentStep - 1, 2);
 			} else {
@@ -105,9 +143,16 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		return false;
 	}
 
+	/**
+	 * Go previous step
+	 *
+	 * @return If success
+	 */
 	public boolean prevStep() {
 		if (canPrev()) {
+			mViewAdapter.onHide(mCurrentStep);
 			mCurrentStep--;
+			mViewAdapter.onShow(mCurrentStep);
 			if (mAnimationEnabled) {
 				mAdapter.notifyItemRangeChanged(mCurrentStep, 2);
 			} else {
@@ -118,44 +163,127 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		return false;
 	}
 
+	/**
+	 * Get Stepper Adapter
+	 *
+	 * @return Stepper Adapter
+	 */
 	@Override
-	public IStepperAdapter getViewAdapter() {
+	public IStepperAdapter getStepperAdapter() {
 		return mViewAdapter;
 	}
 
+	/**
+	 * Get the index of current step
+	 *
+	 * @return The index of current step
+	 */
 	@Override
 	public int getCurrentStep() {
 		return mCurrentStep;
 	}
 
+	/**
+	 * Set normal point color
+	 *
+	 * @param color Normal Point Color
+	 */
+	public void setNormalColor(@ColorInt int color) {
+		mNormalColor = color;
+		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Set normal point color
+	 *
+	 * @param colorRes Normal Point Color resource
+	 */
+	public void setNormalColorResource(@ColorRes int colorRes) {
+		setNormalColor(getResources().getColor(colorRes));
+	}
+
+	/**
+	 * Get normal point color
+	 *
+	 * @return Normal Point Color
+	 */
 	@Override
 	public int getNormalColor() {
 		return mNormalColor;
 	}
 
+	/**
+	 * Set activated point color
+	 *
+	 * @param color Activated Point Color
+	 */
+	public void setActivatedColor(@ColorInt int color) {
+		mActivatedColor = color;
+		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Set activated point color
+	 *
+	 * @param colorRes Activated Point Color resource
+	 */
+	public void setActivatedColorResource(@ColorRes int colorRes) {
+		setActivatedColor(getResources().getColor(colorRes));
+	}
+
+	/**
+	 * Get activated point color
+	 *
+	 * @return Activated Point Color
+	 */
 	@Override
 	public int getActivatedColor() {
 		return mActivatedColor;
 	}
 
+	/**
+	 * Get animation duration
+	 *
+	 * @return Animation duration
+	 */
 	@Override
 	public int getAnimationDuration() {
 		return mAnimationDuration;
 	}
 
+	/**
+	 * Get done icon drawable
+	 *
+	 * @return Done Icon Drawable
+	 */
 	@Override
 	public Drawable getDoneIcon() {
 		return mDoneIcon;
 	}
 
+	/**
+	 * Set if animation should be enabled
+	 *
+	 * @param enabled If animation should be enabled
+	 */
 	public void setAnimationEnabled(boolean enabled) {
 		mAnimationEnabled = enabled;
 	}
 
+	/**
+	 * Return if animation is enabled
+	 *
+	 * @return If animation is enabled
+	 */
 	public boolean isAnimationEnabled() {
 		return mAnimationEnabled;
 	}
 
+	/**
+	 * Set the current step by index
+	 *
+	 * @param currentStep The index of current step
+	 */
 	public void setCurrentStep(int currentStep) {
 		int minIndex = Math.min(currentStep, mCurrentStep);
 		int count = Math.abs(mCurrentStep - currentStep) + 1;
@@ -168,6 +296,9 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		}
 	}
 
+	/**
+	 * Internal RecyclerView Adapter to show item views
+	 */
 	class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
 		@Override
@@ -179,8 +310,8 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		public void onBindViewHolder(ItemHolder holder, int position) {
 			holder.mItemView.setIndex(position + 1);
 			holder.mItemView.setIsLastStep(position == getItemCount() - 1);
-			holder.mItemView.setTitle(getViewAdapter().getTitle(position));
-			holder.mItemView.setSummary(getViewAdapter().getSummary(position));
+			holder.mItemView.setTitle(getStepperAdapter().getTitle(position));
+			holder.mItemView.setSummary(getStepperAdapter().getSummary(position));
 			holder.mItemView.setNormalColor(mNormalColor);
 			holder.mItemView.setActivatedColor(mActivatedColor);
 			holder.mItemView.setAnimationDuration(mAnimationDuration);
@@ -194,7 +325,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 				holder.mItemView.setState(VerticalStepperItemView.STATE_SELECTED);
 			}
 			holder.mItemView.removeCustomView();
-			View customView = getViewAdapter().onCreateCustomView(position, getContext(), holder.mItemView);
+			View customView = getStepperAdapter().onCreateCustomView(position, getContext(), holder.mItemView);
 			if (customView != null) {
 				holder.mItemView.addView(customView);
 			}

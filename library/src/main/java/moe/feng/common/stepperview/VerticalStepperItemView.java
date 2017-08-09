@@ -25,6 +25,9 @@ import java.lang.annotation.RetentionPolicy;
 
 public class VerticalStepperItemView extends FrameLayout {
 
+	/**
+	 * Internal Views
+	 */
 	private View mPointBackground, mLineView;
 	private TextView mPointNumber;
 	private TextView mTitleText, mSummaryText;
@@ -33,16 +36,25 @@ public class VerticalStepperItemView extends FrameLayout {
 	private ImageView mDoneIconView;
 	private View mMarginBottomView;
 
+	/**
+	 * Step state
+	 */
 	private String mTitle, mSummary;
 	private int mIndex = 1;
 	private boolean isLastStep = false;
 	private int mState = STATE_NORMAL;
 
+	/**
+	 * View attributes
+	 */
 	private int mAnimationDuration;
 	private int mNormalColor, mActivatedColor;
 	private Drawable mDoneIcon;
 	private boolean mAnimationEnabled = true;
 
+	/**
+	 * The bind views
+	 */
 	private @Nullable VerticalStepperItemView mPrevItemView, mNextItemView;
 
 	public static final int STATE_NORMAL = 0, STATE_SELECTED = 1, STATE_DONE = 2;
@@ -110,6 +122,9 @@ public class VerticalStepperItemView extends FrameLayout {
 		return mCustomView;
 	}
 
+	/**
+	 * Remove custom view manually
+	 */
 	public void removeCustomView() {
 		mCustomView.removeAllViews();
 	}
@@ -148,6 +163,11 @@ public class VerticalStepperItemView extends FrameLayout {
 		mMarginBottomView.getLayoutParams().height = (!isLastStep ? (mState != STATE_SELECTED ? 28 : 36) : 0) * DP;
 	}
 
+	/**
+	 * Set up the state of this stepper item
+	 *
+	 * @param state The state of this stepper item
+	 */
 	public void setState(@State int state) {
 		// Change point background
 		if (state != STATE_NORMAL && mState == STATE_NORMAL) {
@@ -185,56 +205,117 @@ public class VerticalStepperItemView extends FrameLayout {
 		updateMarginBottom();
 	}
 
+	/**
+	 * Get the state of this stepper item
+	 *
+	 * @return The state of this stepper item
+	 */
 	public @State int getState() {
 		return mState;
 	}
 
+	/**
+	 * Set title for this step
+	 *
+	 * @param title The title should be set
+	 */
 	public void setTitle(String title) {
 		mTitle = title;
 		mTitleText.setText(title);
 	}
 
+	/**
+	 * Set title for this step
+	 *
+	 * @param titleRes The title resource should be set
+	 */
 	public void setTitle(@StringRes int titleRes) {
 		setTitle(getResources().getString(titleRes));
 	}
 
+	/**
+	 * Get the title of this step
+	 *
+	 * @return The title of this step
+	 */
 	public String getTitle() {
 		return mTitle;
 	}
 
-	public void setSummary(String summary) {
+	/**
+	 * Set summary for this step.
+	 * If you set a null value, it will hide the summary view.
+	 *
+	 * @param summary The summary should be set or null
+	 */
+	public void setSummary(@Nullable String summary) {
 		mSummary = summary;
 		mSummaryText.setText(summary);
 		mSummaryText.setVisibility(mState != STATE_SELECTED && !TextUtils.isEmpty(mSummary) ? View.VISIBLE : View.GONE);
 	}
 
+	/**
+	 * Set summary for this step.
+	 *
+	 * @param summaryRes The summary resource should be set
+	 */
 	public void setSummary(@StringRes int summaryRes) {
 		setSummary(getResources().getString(summaryRes));
 	}
 
+	/**
+	 * Get the summary of this step
+	 *
+	 * @return The summary of this step
+	 */
 	public String getSummary() {
 		return mSummary;
 	}
 
+	/**
+	 * Set index for this step
+	 *
+	 * @param index Index
+	 */
 	public void setIndex(int index) {
 		mIndex = index;
 		mPointNumber.setText(String.valueOf(index));
 	}
 
+	/**
+	 * Get the index of this step
+	 *
+	 * @return The index of this step
+	 */
 	public int getIndex() {
 		return mIndex;
 	}
 
+	/**
+	 * Set if it is last step
+	 *
+	 * @param isLastStep If it is last step
+	 */
 	public void setIsLastStep(boolean isLastStep) {
 		this.isLastStep = isLastStep;
 		mLineView.setVisibility(isLastStep ? View.INVISIBLE : View.VISIBLE);
 		updateMarginBottom();
 	}
 
+	/**
+	 * Return if it is last step
+	 *
+	 * @return If it is last step
+	 */
 	public boolean isLastStep() {
 		return isLastStep;
 	}
 
+	/**
+	 * Set if animation should be enabled
+	 *
+	 * @param shouldAnimate If animation should be enabled
+	 */
 	public void setAnimationEnabled(boolean shouldAnimate) {
 		mAnimationEnabled = shouldAnimate;
 		if (shouldAnimate) {
@@ -244,31 +325,67 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 	}
 
+	/**
+	 * Get if animation is enabled
+	 *
+	 * @return If animation is enabled
+	 */
 	public boolean isAnimationEnabled() {
 		return mAnimationEnabled;
 	}
 
+	/**
+	 * Set done icon drawable
+	 *
+	 * @param drawable Done icon drawable
+	 */
 	public void setDoneIcon(Drawable drawable) {
 		mDoneIcon = drawable;
 		mDoneIconView.setImageDrawable(drawable);
 	}
 
+	/**
+	 * Set done icon drawable resource
+	 *
+	 * @param drawableRes Done icon drawable resource
+	 */
 	public void setDoneIconResource(@DrawableRes int drawableRes) {
 		setDoneIcon(getResources().getDrawable(drawableRes));
 	}
 
+	/**
+	 * Get done icon drawable
+	 *
+	 * @return Done icon drawable
+	 */
 	public Drawable getDoneIcon() {
 		return mDoneIcon;
 	}
 
+	/**
+	 * Set animation duration
+	 *
+	 * @param duration Animation Duration
+	 */
 	public void setAnimationDuration(int duration) {
 		mAnimationDuration = duration;
 	}
 
+	/**
+	 * Get animation duration
+	 *
+	 * @return Animation Duration
+	 */
 	public int getAnimationDuration() {
 		return mAnimationDuration;
 	}
 
+	/**
+	 * Bind two stepper items for automatically setting state with nextStep() or prevStep()
+	 *
+	 * @param prevItem The previous item
+	 * @param nextItem The next item
+	 */
 	public void bindSteppers(@Nullable VerticalStepperItemView prevItem, @Nullable VerticalStepperItemView nextItem) {
 		if (prevItem != null) {
 			mPrevItemView = prevItem;
@@ -284,6 +401,11 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 	}
 
+	/**
+	 * Bind stepper items for automatically setting state with nextStep() or prevStep()
+	 *
+	 * @param items Stepper items
+	 */
 	public static void bindSteppers(@NonNull VerticalStepperItemView... items) {
 		for (int i = 0; i < items.length - 1; i++) {
 			if (i != 0) {
@@ -293,10 +415,20 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 	}
 
+	/**
+	 * Return if stepper can go previous
+	 *
+	 * @return If stepper can go previous
+	 */
 	public boolean canPrevStep() {
 		return mPrevItemView != null;
 	}
 
+	/**
+	 * Go previous step
+	 *
+	 * @return If success
+	 */
 	public boolean prevStep() {
 		if (canPrevStep()) {
 			setState(STATE_NORMAL);
@@ -306,10 +438,20 @@ public class VerticalStepperItemView extends FrameLayout {
 		return false;
 	}
 
+	/**
+	 * Return if stepper can go next
+	 *
+	 * @return If stepper can go next
+	 */
 	public boolean canNextStep() {
 		return mNextItemView != null;
 	}
 
+	/**
+	 * Go next step
+	 *
+	 * @return If success
+	 */
 	public boolean nextStep() {
 		if (canNextStep()) {
 			setState(STATE_DONE);
@@ -319,6 +461,11 @@ public class VerticalStepperItemView extends FrameLayout {
 		return false;
 	}
 
+	/**
+	 * Set normal point color
+	 *
+	 * @param color Normal Point Color
+	 */
 	public void setNormalColor(@ColorInt int color) {
 		mNormalColor = color;
 		if (mState == STATE_NORMAL) {
@@ -326,14 +473,29 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 	}
 
+	/**
+	 * Set normal point color
+	 *
+	 * @param colorRes Normal Point Color resource
+	 */
 	public void setNormalColorResource(@ColorRes int colorRes) {
 		setNormalColor(getResources().getColor(colorRes));
 	}
 
+	/**
+	 * Get normal point color
+	 *
+	 * @return Normal Point Color
+	 */
 	public @ColorInt int getNormalColor() {
 		return mNormalColor;
 	}
 
+	/**
+	 * Set activated point color
+	 *
+	 * @param color Activated Point Color
+	 */
 	public void setActivatedColor(@ColorInt int color) {
 		mActivatedColor = color;
 		if (mState != STATE_NORMAL) {
@@ -341,10 +503,20 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 	}
 
+	/**
+	 * Set activated point color
+	 *
+	 * @param colorRes Activated Point Color resource
+	 */
 	public void setActivatedColorResource(@ColorRes int colorRes) {
 		setActivatedColor(getResources().getColor(colorRes));
 	}
 
+	/**
+	 * Get activated point color
+	 *
+	 * @return Activated Point Color
+	 */
 	public @ColorInt int getActivatedColor() {
 		return mActivatedColor;
 	}
