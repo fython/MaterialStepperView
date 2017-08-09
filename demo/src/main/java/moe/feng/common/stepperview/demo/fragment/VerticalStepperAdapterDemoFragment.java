@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import moe.feng.common.stepperview.IStepperViewAdapter;
 import moe.feng.common.stepperview.VerticalStepperItemView;
@@ -51,7 +52,7 @@ public class VerticalStepperAdapterDemoFragment extends Fragment implements ISte
 	}
 
 	@Override
-	public View onCreateCustomView(int index, Context context, VerticalStepperItemView parent) {
+	public View onCreateCustomView(final int index, Context context, VerticalStepperItemView parent) {
 		View inflateView = LayoutInflater.from(context).inflate(R.layout.vertical_stepper_sample_item, parent, false);
 		TextView contentView = inflateView.findViewById(R.id.item_content);
 		contentView.setText(
@@ -65,10 +66,16 @@ public class VerticalStepperAdapterDemoFragment extends Fragment implements ISte
 				}
 			}
 		});
+		Button prevButton = inflateView.findViewById(R.id.button_prev);
+		prevButton.setText(index == 0 ? R.string.toggle_animation_button : android.R.string.cancel);
 		inflateView.findViewById(R.id.button_prev).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mVerticalStepperView.prevStep();
+				if (index != 0) {
+					mVerticalStepperView.prevStep();
+				} else {
+					mVerticalStepperView.setAnimationEnabled(!mVerticalStepperView.isAnimationEnabled());
+				}
 			}
 		});
 		return inflateView;

@@ -41,6 +41,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	private int mAnimationDuration;
 	private int mNormalColor, mActivatedColor;
 	private Drawable mDoneIcon;
+	private boolean mAnimationEnabled = true;
 
 	private @Nullable VerticalStepperItemView mPrevItemView, mNextItemView;
 
@@ -78,6 +79,7 @@ public class VerticalStepperItemView extends FrameLayout {
 			mNormalColor = a.getColor(R.styleable.VerticalStepperItemView_step_normal_color, mNormalColor);
 			mActivatedColor = a.getColor(R.styleable.VerticalStepperItemView_step_activated_color, mActivatedColor);
 			mAnimationDuration = a.getInt(R.styleable.VerticalStepperItemView_step_animation_duration, mAnimationDuration);
+			mAnimationEnabled = a.getBoolean(R.styleable.VerticalStepperItemView_step_enable_animation, true);
 
 			if (a.hasValue(R.styleable.VerticalStepperItemView_step_done_icon)) {
 				mDoneIcon = a.getDrawable(R.styleable.VerticalStepperItemView_step_done_icon);
@@ -92,6 +94,7 @@ public class VerticalStepperItemView extends FrameLayout {
 		setState(mState);
 		setIsLastStep(isLastStep);
 		setDoneIcon(mDoneIcon);
+		setAnimationEnabled(mAnimationEnabled);
 	}
 
 	@Override
@@ -228,12 +231,17 @@ public class VerticalStepperItemView extends FrameLayout {
 		return isLastStep;
 	}
 
-	public void setShouldAnimateWhenCustomViewShowHide(boolean shouldAnimate) {
+	public void setAnimationEnabled(boolean shouldAnimate) {
+		mAnimationEnabled = shouldAnimate;
 		if (shouldAnimate) {
 			mRightContainer.setLayoutTransition(new LayoutTransition());
 		} else {
 			mRightContainer.setLayoutTransition(null);
 		}
+	}
+
+	public boolean isAnimationEnabled() {
+		return mAnimationEnabled;
 	}
 
 	public void setDoneIcon(Drawable drawable) {

@@ -5,12 +5,14 @@
 	<attr name="step_activated_color" format="color"/>
 	<attr name="step_done_icon" format="reference"/>
 	<attr name="step_animation_duration" format="integer"/>
+	<attr name="step_enable_animation" format="boolean"/>
 
 	<declare-styleable name="VerticalStepperView">
 		<attr name="step_normal_color"/>
 		<attr name="step_activated_color"/>
 		<attr name="step_done_icon"/>
 		<attr name="step_animation_duration"/>
+		<attr name="step_enable_animation"/>
 	</declare-styleable>
 
 	<declare-styleable name="VerticalStepperItemView">
@@ -27,6 +29,7 @@
 		<attr name="step_activated_color"/>
 		<attr name="step_done_icon"/>
 		<attr name="step_animation_duration"/>
+		<attr name="step_enable_animation"/>
 	</declare-styleable>
 	
 </resources>

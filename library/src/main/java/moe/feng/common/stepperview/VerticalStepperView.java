@@ -17,6 +17,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 
 	private IStepperViewAdapter mViewAdapter;
 	private int mCurrentStep = 0;
+	private boolean mAnimationEnabled;
 
 	private int mAnimationDuration;
 	private int mNormalColor, mActivatedColor;
@@ -46,6 +47,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 			mNormalColor = a.getColor(R.styleable.VerticalStepperView_step_normal_color, mNormalColor);
 			mActivatedColor = a.getColor(R.styleable.VerticalStepperView_step_activated_color, mActivatedColor);
 			mAnimationDuration = a.getInt(R.styleable.VerticalStepperView_step_animation_duration, mAnimationDuration);
+			mAnimationEnabled = a.getBoolean(R.styleable.VerticalStepperView_step_enable_animation, true);
 
 			if (a.hasValue(R.styleable.VerticalStepperView_step_done_icon)) {
 				mDoneIcon = a.getDrawable(R.styleable.VerticalStepperView_step_done_icon);
@@ -53,6 +55,8 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 
 			a.recycle();
 		}
+
+		setAnimationEnabled(mAnimationEnabled);
 	}
 
 	private void prepareListView(Context context) {
@@ -90,7 +94,11 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	public boolean nextStep() {
 		if (canNext()) {
 			mCurrentStep++;
-			mAdapter.notifyItemRangeChanged(mCurrentStep - 1, 2);
+			if (mAnimationEnabled) {
+				mAdapter.notifyItemRangeChanged(mCurrentStep - 1, 2);
+			} else {
+				mAdapter.notifyDataSetChanged();
+			}
 			return true;
 		}
 		return false;
@@ -99,7 +107,11 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	public boolean prevStep() {
 		if (canPrev()) {
 			mCurrentStep--;
-			mAdapter.notifyItemRangeChanged(mCurrentStep, 2);
+			if (mAnimationEnabled) {
+				mAdapter.notifyItemRangeChanged(mCurrentStep, 2);
+			} else {
+				mAdapter.notifyDataSetChanged();
+			}
 			return true;
 		}
 		return false;
@@ -135,12 +147,24 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		return mDoneIcon;
 	}
 
+	public void setAnimationEnabled(boolean enabled) {
+		mAnimationEnabled = enabled;
+	}
+
+	public boolean isAnimationEnabled() {
+		return mAnimationEnabled;
+	}
+
 	public void setCurrentStep(int currentStep) {
 		int minIndex = Math.min(currentStep, mCurrentStep);
 		int count = Math.abs(mCurrentStep - currentStep) + 1;
 
 		mCurrentStep = currentStep;
-		mAdapter.notifyItemRangeChanged(minIndex, count);
+		if (mAnimationEnabled) {
+			mAdapter.notifyItemRangeChanged(minIndex, count);
+		} else {
+			mAdapter.notifyDataSetChanged();
+		}
 	}
 
 	class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
@@ -160,6 +184,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 			holder.mItemView.setActivatedColor(mActivatedColor);
 			holder.mItemView.setAnimationDuration(mAnimationDuration);
 			holder.mItemView.setDoneIcon(mDoneIcon);
+			holder.mItemView.setAnimationEnabled(mAnimationEnabled);
 			if (getCurrentStep() > position) {
 				holder.mItemView.setState(VerticalStepperItemView.STATE_DONE);
 			} else if (getCurrentStep() < position) {
