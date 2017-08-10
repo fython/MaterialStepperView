@@ -4,6 +4,8 @@
 
 [Material Design Stepper](https://material.io/guidelines/components/steppers.html) Widgets on Android (SDK 21+, maybe can be lower)
 
+[Repo Wiki](https://github.com/fython/MaterialStepperView/wiki)
+
 ## Import (Gradle)
 
 First, add it in your root build.gradle at the end of repositories:
@@ -31,11 +33,13 @@ Currently, we have only made Vertical style stepper view.
 
 There will be more styles in the future.
 
+You can customize normal/activated point color, done icon, animation duration and animation enabled also. [How to?](https://github.com/fython/MaterialStepperView/wiki/Set-item-values-and-styles)
+
 ### Vertical Stepper View
 
 [![Vertical Stepper View Demo](.readme/vertical.gif)](https://www.youtube.com/watch?v=y9gSwHKwxVM)
 
-Instructions will be added later. You can read demo source code to learn how to use.
+[Read Wiki](https://github.com/fython/MaterialStepperView/wiki/Vertical-Style) and learn how to use
 
 ## Support me
 
