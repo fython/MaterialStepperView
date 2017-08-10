@@ -10,6 +10,7 @@
 	<dimen name="vertical_stepper_point_margin_start">24dp</dimen>
 	<dimen name="vertical_stepper_point_margin_end">12dp</dimen>
 	<dimen name="vertical_stepper_line_margin_top">8dp</dimen>
+	<dimen name="vertical_stepper_line_width">1dp</dimen>
 	<dimen name="vertical_stepper_item_space_height">8dp</dimen>
 
 </resources>

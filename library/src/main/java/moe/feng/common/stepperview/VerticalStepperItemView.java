@@ -74,7 +74,7 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		prepareViews(context);
 
-		mNormalColor = getResources().getColor(R.color.material_grey_500);
+		mNormalColor = ViewUtils.getColorFromAttr(context, android.R.attr.textColorSecondary);
 		mActivatedColor = ViewUtils.getColorFromAttr(context, R.attr.colorPrimary);
 		mDoneIcon = getResources().getDrawable(R.drawable.ic_done_white_16dp);
 		mAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -195,6 +195,14 @@ public class VerticalStepperItemView extends FrameLayout {
 			mDoneIconView.setAlpha(state == STATE_DONE ? 1f : 0f);
 			mPointNumber.setAlpha(state == STATE_DONE ? 0f : 1f);
 		}
+
+		// Set title style
+		mTitleText.setTextAppearance(getContext(), state == STATE_DONE ?
+				R.style.TextAppearance_Widget_Stepper_Done : (
+						state == STATE_NORMAL ?
+								R.style.TextAppearance_Widget_Stepper_Normal :
+								R.style.TextAppearance_Widget_Stepper_Selected
+				));
 
 		// Set the visibility of views
 		mSummaryText.setVisibility(state != STATE_SELECTED && !TextUtils.isEmpty(mSummary) ? View.VISIBLE : View.GONE);

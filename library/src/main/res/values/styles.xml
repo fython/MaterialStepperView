@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<style name="TextAppearance.Widget.Stepper.Done" parent="TextAppearance.AppCompat.Body1">
+
+	</style>
+
+	<style name="TextAppearance.Widget.Stepper.Selected" parent="TextAppearance.AppCompat.Body2">
+
+	</style>
+
+	<style name="TextAppearance.Widget.Stepper.Normal" parent="TextAppearance.AppCompat.Body1">
+		<item name="android:textColor">?android:textColorSecondary</item>
+	</style>
+
+</resources>

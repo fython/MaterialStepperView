@@ -50,11 +50,11 @@
 		<!-- Vertical Stepper Line -->
 		<View
 				android:id="@+id/stepper_line"
-				android:layout_width="0.5dp"
+				android:layout_width="@dimen/vertical_stepper_line_width"
 				android:layout_height="0dp"
 				android:layout_weight="1"
 				android:layout_marginTop="@dimen/vertical_stepper_line_margin_top"
-				android:background="@color/material_grey_500"/>
+				android:background="@color/material_grey_400"/>
 
 	</LinearLayout>
 

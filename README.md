@@ -33,9 +33,9 @@ There will be more styles in the future.
 
 ### Vertical Stepper View
 
-[![Vertical Stepper View Demo](.readme/vertical.gif)](https://youtu.be/NCalAAP0y4o)
+[![Vertical Stepper View Demo](.readme/vertical.gif)](https://www.youtube.com/watch?v=y9gSwHKwxVM)
 
-Instructions will be add later. You can read demo source code to learn how to use.
+Instructions will be added later. You can read demo source code to learn how to use.
 
 ## Support me
 
