@@ -12,10 +12,7 @@ import android.os.Parcelable;
 import android.support.annotation.*;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.*;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -37,6 +34,9 @@ public class VerticalStepperItemView extends FrameLayout {
 	private LinearLayout mRightContainer;
 	private ImageView mDoneIconView, mErrorIconView;
 	private View mMarginBottomView;
+
+	private ValueAnimator mTitleColorAnimator, mSummaryColorAnimator, mPointColorAnimator;
+	private ViewPropertyAnimator mPointAnimator, mErrorIconAnimator;
 
 	/**
 	 * Step state
@@ -173,18 +173,19 @@ public class VerticalStepperItemView extends FrameLayout {
 	 * @param state The state of this stepper item
 	 */
 	@SuppressLint("NewApi")
-	public void setState(@State int state) {
+	public synchronized void setState(@State int state) {
 		// Change point background
+		if (mPointColorAnimator != null) mPointColorAnimator.cancel();
 		if (state != STATE_NORMAL && mState == STATE_NORMAL) {
-			ValueAnimator animator = ObjectAnimator
+			mPointColorAnimator = ObjectAnimator
 					.ofArgb(mPointBackground, "backgroundColor", mNormalColor, mActivatedColor);
-			animator.setDuration(mAnimationDuration);
-			animator.start();
+			mPointColorAnimator.setDuration(mAnimationDuration);
+			mPointColorAnimator.start();
 		} else if (state == STATE_NORMAL && mState != STATE_NORMAL) {
-			 ValueAnimator animator = ObjectAnimator
+			mPointColorAnimator = ObjectAnimator
 					.ofArgb(mPointBackground, "backgroundColor", mActivatedColor, mNormalColor);
-			animator.setDuration(mAnimationDuration);
-			animator.start();
+			mPointColorAnimator.setDuration(mAnimationDuration);
+			mPointColorAnimator.start();
 		} else {
 			mPointBackground.setBackgroundColor(state == STATE_NORMAL ? mNormalColor : mActivatedColor);
 		}
@@ -203,6 +204,7 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		// Set title style
 		int lastTitleTextColor = mTitleText.getCurrentTextColor();
+		if (mTitleColorAnimator != null) mTitleColorAnimator.cancel();
 		mTitleText.setTextAppearance(getContext(), state == STATE_DONE ?
 				R.style.TextAppearance_Widget_Stepper_Done : (
 						state == STATE_NORMAL ?
@@ -212,37 +214,43 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		// Update error state
 		if (mErrorText != null) {
-			ValueAnimator animator = ObjectAnimator
+			mTitleColorAnimator = ObjectAnimator
 					.ofArgb(mTitleText, "textColor",
 							lastTitleTextColor, getResources().getColor(R.color.material_red_500));
-			animator.setDuration(mAnimationDuration);
-			animator.start();
-			animator = ObjectAnimator
+			mTitleColorAnimator.setDuration(mAnimationDuration);
+			mTitleColorAnimator.start();
+			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
+			mSummaryColorAnimator = ObjectAnimator
 					.ofArgb(mSummaryText, "textColor",
 							mSummaryText.getCurrentTextColor(), getResources().getColor(R.color.material_red_500));
-			animator.setDuration(mAnimationDuration);
-			animator.start();
-			if (mErrorIconView.getAlpha() == 0F) {
-				mPointFrame.animate().alpha(0F).setDuration(mAnimationDuration).start();
-				mErrorIconView.setScaleX(0.6F);
-				mErrorIconView.setScaleY(0.6F);
-				mErrorIconView.animate().scaleX(1F).scaleY(1F)
-						.alpha(1F).setDuration(mAnimationDuration)
-						.setInterpolator(new OvershootInterpolator()).start();
-			}
+			mSummaryColorAnimator.setDuration(mAnimationDuration);
+			mSummaryColorAnimator.start();
+
+			if (mPointAnimator != null) mPointAnimator.cancel();
+			mPointAnimator = mPointFrame.animate().alpha(0F).setDuration(mAnimationDuration);
+			mPointAnimator.start();
+			mErrorIconView.setScaleX(0.6F);
+			mErrorIconView.setScaleY(0.6F);
+			if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
+			mErrorIconAnimator = mErrorIconView.animate().scaleX(1F).scaleY(1F)
+					.alpha(1F).setDuration(mAnimationDuration).setInterpolator(new OvershootInterpolator());
+			mErrorIconAnimator.start();
 		} else {
-			ValueAnimator animator = ObjectAnimator
+			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
+			mSummaryColorAnimator = ObjectAnimator
 					.ofArgb(mSummaryText, "textColor",
 							mSummaryText.getCurrentTextColor(), getResources().getColor(R.color.material_grey_500));
-			animator.setDuration(mAnimationDuration);
-			animator.start();
-			if (mErrorIconView.getAlpha() != 0F) {
-				mPointFrame.setScaleX(0.6F);
-				mPointFrame.setScaleY(0.6F);
-				mPointFrame.animate().scaleX(1F).scaleY(1F)
-						.alpha(1F).setDuration(mAnimationDuration).start();
-				mErrorIconView.animate().alpha(0F).setDuration(mAnimationDuration).start();
-			}
+			mSummaryColorAnimator.setDuration(mAnimationDuration);
+			mSummaryColorAnimator.start();
+
+			mPointFrame.setScaleX(0.6F);
+			mPointFrame.setScaleY(0.6F);
+			if (mPointAnimator != null) mPointAnimator.cancel();
+			mPointAnimator = mPointFrame.animate().scaleX(1F).scaleY(1F).alpha(1F).setDuration(mAnimationDuration);
+			mPointAnimator.start();
+			if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
+			mErrorIconAnimator = mErrorIconView.animate().alpha(0F).setDuration(mAnimationDuration);
+			mErrorIconAnimator.start();
 		}
 
 		// Set the visibility of views
