@@ -39,6 +39,17 @@ public class VerticalStepperDemoFragment extends Fragment {
 			}
 		});
 
+		view.findViewById(R.id.button_test_error).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (mSteppers[0].getErrorText() != null) {
+					mSteppers[0].setErrorText(null);
+				} else {
+					mSteppers[0].setErrorText("Test error!");
+				}
+			}
+		});
+
 		mPrevBtn1 = view.findViewById(R.id.button_prev_1);
 		mPrevBtn1.setOnClickListener(new View.OnClickListener() {
 			@Override

@@ -2,6 +2,7 @@ package moe.feng.common.stepperview.internal;
 
 import android.content.Context;
 import android.graphics.Outline;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -28,7 +29,11 @@ public class ClipOvalFrameLayout extends FrameLayout {
 	}
 
 	private void init() {
-		setClipToOutline(true);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			setClipToOutline(true);
+		} else {
+			// TODO Support SDK < 21
+		}
 	}
 
 }
