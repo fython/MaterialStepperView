@@ -226,15 +226,17 @@ public class VerticalStepperItemView extends FrameLayout {
 			mSummaryColorAnimator.setDuration(mAnimationDuration);
 			mSummaryColorAnimator.start();
 
-			if (mPointAnimator != null) mPointAnimator.cancel();
-			mPointAnimator = mPointFrame.animate().alpha(0F).setDuration(mAnimationDuration);
-			mPointAnimator.start();
-			mErrorIconView.setScaleX(0.6F);
-			mErrorIconView.setScaleY(0.6F);
-			if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
-			mErrorIconAnimator = mErrorIconView.animate().scaleX(1F).scaleY(1F)
-					.alpha(1F).setDuration(mAnimationDuration).setInterpolator(new OvershootInterpolator());
-			mErrorIconAnimator.start();
+			if (mErrorIconView.getAlpha() < 1F) {
+				if (mPointAnimator != null) mPointAnimator.cancel();
+				mPointAnimator = mPointFrame.animate().alpha(0F).setDuration(mAnimationDuration);
+				mPointAnimator.start();
+				mErrorIconView.setScaleX(0.6F);
+				mErrorIconView.setScaleY(0.6F);
+				if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
+				mErrorIconAnimator = mErrorIconView.animate().scaleX(1F).scaleY(1F)
+						.alpha(1F).setDuration(mAnimationDuration).setInterpolator(new OvershootInterpolator());
+				mErrorIconAnimator.start();
+			}
 		} else {
 			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
 			mSummaryColorAnimator = ObjectAnimator
@@ -243,14 +245,16 @@ public class VerticalStepperItemView extends FrameLayout {
 			mSummaryColorAnimator.setDuration(mAnimationDuration);
 			mSummaryColorAnimator.start();
 
-			mPointFrame.setScaleX(0.6F);
-			mPointFrame.setScaleY(0.6F);
-			if (mPointAnimator != null) mPointAnimator.cancel();
-			mPointAnimator = mPointFrame.animate().scaleX(1F).scaleY(1F).alpha(1F).setDuration(mAnimationDuration);
-			mPointAnimator.start();
-			if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
-			mErrorIconAnimator = mErrorIconView.animate().alpha(0F).setDuration(mAnimationDuration);
-			mErrorIconAnimator.start();
+			if (mPointFrame.getAlpha() < 1F) {
+				mPointFrame.setScaleX(0.6F);
+				mPointFrame.setScaleY(0.6F);
+				if (mPointAnimator != null) mPointAnimator.cancel();
+				mPointAnimator = mPointFrame.animate().scaleX(1F).scaleY(1F).alpha(1F).setDuration(mAnimationDuration);
+				mPointAnimator.start();
+				if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
+				mErrorIconAnimator = mErrorIconView.animate().alpha(0F).setDuration(mAnimationDuration);
+				mErrorIconAnimator.start();
+			}
 		}
 
 		// Set the visibility of views
