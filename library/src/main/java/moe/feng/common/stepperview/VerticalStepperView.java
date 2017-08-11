@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -24,8 +25,9 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	/**
 	 * View State
 	 */
-	private IStepperAdapter mViewAdapter;
+	private IStepperAdapter mStepperAdapter;
 	private int mCurrentStep = 0;
+	private String[] mErrorTexts = null;
 
 	/**
 	 * View attributes
@@ -92,8 +94,45 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @param stepperAdapter Stepper Adapter
 	 */
 	public void setStepperAdapter(IStepperAdapter stepperAdapter) {
-		mViewAdapter = stepperAdapter;
+		mStepperAdapter = stepperAdapter;
+		updateSteppers();
+	}
+
+	/**
+	 * Notify the stepper adapter changed
+	 */
+	public void updateSteppers() {
+		if ((mErrorTexts != null && mErrorTexts.length != mStepperAdapter.size()) || mErrorTexts == null) {
+			mErrorTexts = new String[mStepperAdapter.size()];
+		}
 		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Set error text for item. If you want to remove error text, the errorText param should be null.
+	 *
+	 * @param index Index
+	 * @param errorText Error text or null
+	 */
+	public void setErrorText(int index, @Nullable String errorText) {
+		if (mErrorTexts == null) {
+			mErrorTexts = new String[mStepperAdapter.size()];
+		}
+		mErrorTexts[index] = errorText;
+		updateSteppers();
+	}
+
+	/**
+	 * Get error text of item
+	 *
+	 * @param index Index
+	 * @return Error text or null (means no error)
+	 */
+	public @Nullable String getErrorText(int index) {
+		if (mErrorTexts != null) {
+			return mErrorTexts[index];
+		}
+		return null;
 	}
 
 	/**
@@ -102,7 +141,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @return The count of steps
 	 */
 	public int getStepCount() {
-		return mViewAdapter != null ? mViewAdapter.size() : 0;
+		return mStepperAdapter != null ? mStepperAdapter.size() : 0;
 	}
 
 	/**
@@ -111,7 +150,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @return If stepper can go next
 	 */
 	public boolean canNext() {
-		return mViewAdapter != null && mCurrentStep < mViewAdapter.size() - 1;
+		return mStepperAdapter != null && mCurrentStep < mStepperAdapter.size() - 1;
 	}
 
 	/**
@@ -120,7 +159,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @return If stepper can go previous
 	 */
 	public boolean canPrev() {
-		return mViewAdapter != null && mCurrentStep > 0;
+		return mStepperAdapter != null && mCurrentStep > 0;
 	}
 
 	/**
@@ -130,9 +169,9 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 */
 	public boolean nextStep() {
 		if (canNext()) {
-			mViewAdapter.onHide(mCurrentStep);
+			mStepperAdapter.onHide(mCurrentStep);
 			mCurrentStep++;
-			mViewAdapter.onShow(mCurrentStep);
+			mStepperAdapter.onShow(mCurrentStep);
 			if (mAnimationEnabled) {
 				mAdapter.notifyItemRangeChanged(mCurrentStep - 1, 2);
 			} else {
@@ -150,9 +189,9 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 */
 	public boolean prevStep() {
 		if (canPrev()) {
-			mViewAdapter.onHide(mCurrentStep);
+			mStepperAdapter.onHide(mCurrentStep);
 			mCurrentStep--;
-			mViewAdapter.onShow(mCurrentStep);
+			mStepperAdapter.onShow(mCurrentStep);
 			if (mAnimationEnabled) {
 				mAdapter.notifyItemRangeChanged(mCurrentStep, 2);
 			} else {
@@ -170,7 +209,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 */
 	@Override
 	public IStepperAdapter getStepperAdapter() {
-		return mViewAdapter;
+		return mStepperAdapter;
 	}
 
 	/**
@@ -317,6 +356,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 			holder.mItemView.setAnimationDuration(mAnimationDuration);
 			holder.mItemView.setDoneIcon(mDoneIcon);
 			holder.mItemView.setAnimationEnabled(mAnimationEnabled);
+			holder.mItemView.setErrorText(mErrorTexts[position]);
 			if (getCurrentStep() > position) {
 				holder.mItemView.setState(VerticalStepperItemView.STATE_DONE);
 			} else if (getCurrentStep() < position) {
