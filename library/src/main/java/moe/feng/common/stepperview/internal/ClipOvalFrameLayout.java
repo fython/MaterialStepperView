@@ -1,17 +1,18 @@
 package moe.feng.common.stepperview.internal;
 
 import android.content.Context;
-import android.graphics.Outline;
+import android.graphics.Canvas;
+import android.graphics.Path;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 
 /**
  * @hide
  */
 public class ClipOvalFrameLayout extends FrameLayout {
+
+	private Path path = new Path();
 
 	public ClipOvalFrameLayout(Context context) {
 		super(context);
@@ -29,11 +30,38 @@ public class ClipOvalFrameLayout extends FrameLayout {
 	}
 
 	private void init() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+		if (!isPreLollipop()) {
 			setClipToOutline(true);
-		} else {
-			// TODO Support SDK < 21
 		}
+	}
+
+	@Override
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		super.onSizeChanged(w, h, oldw, oldh);
+
+		if (isPreLollipop()) {
+			float halfWidth = w / 2f;
+			float halfHeight = h / 2f;
+			path.reset();
+			path.addCircle(halfWidth, halfHeight, Math.min(halfWidth, halfHeight), Path.Direction.CW);
+			path.close();
+		}
+	}
+
+	@Override
+	protected void dispatchDraw(Canvas canvas) {
+		if (isPreLollipop()) {
+			int save = canvas.save();
+			canvas.clipPath(path);
+			super.dispatchDraw(canvas);
+			canvas.restoreToCount(save);
+		} else {
+			super.dispatchDraw(canvas);
+		}
+	}
+
+	private static boolean isPreLollipop() {
+		return Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
 	}
 
 }
