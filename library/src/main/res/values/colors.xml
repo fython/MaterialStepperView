@@ -4,5 +4,6 @@
 	<color name="material_grey_500">#9E9E9E</color>
 	<color name="material_grey_400">#BDBDBD</color>
 	<color name="material_red_500">#F44336</color>
+	<color name="material_blue_500">#2196F3</color>
 
 </resources>

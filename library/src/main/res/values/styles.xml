@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<style name="TextAppearance.Widget.Stepper.Done" parent="TextAppearance.AppCompat.Body1">
+	<style name="TextAppearance.Widget.Stepper.Done" parent="TextAppearance.MaterialCompat.Body1">
 
 	</style>
 
-	<style name="TextAppearance.Widget.Stepper.Selected" parent="TextAppearance.AppCompat.Body2">
+	<style name="TextAppearance.Widget.Stepper.Selected" parent="TextAppearance.MaterialCompat.Body2">
 
 	</style>
 
-	<style name="TextAppearance.Widget.Stepper.Normal" parent="TextAppearance.AppCompat.Body1">
+	<style name="TextAppearance.Widget.Stepper.Normal" parent="TextAppearance.MaterialCompat.Body1">
 		<item name="android:textColor">?android:textColorSecondary</item>
 	</style>
 
 	<style name="Widget.Stepper" parent="">
 		<item name="step_normal_color">@color/material_grey_500</item>
-		<item name="step_activated_color">?attr/colorPrimary</item>
+		<item name="step_activated_color">@color/material_blue_500</item>
 		<item name="step_done_icon">@drawable/ic_done_white_16dp</item>
 		<item name="step_animation_duration">@android:integer/config_shortAnimTime</item>
 		<item name="step_line_color">@color/material_grey_500</item>
 		<item name="step_error_highlight_color">@color/material_red_500</item>
+	</style>
+
+	<style name="TextAppearance"/>
+
+	<style name="TextAppearance.MaterialCompat"/>
+
+	<style name="TextAppearance.MaterialCompat.Body1">
+		<item name="android:textSize">14sp</item>
+		<item name="android:fontFamily">sans-serif</item>
+		<item name="android:textColor">?android:attr/textColorPrimary</item>
+	</style>
+
+	<style name="TextAppearance.MaterialCompat.Body2">
+		<item name="android:textSize">14sp</item>
+		<item name="android:fontFamily">sans-serif-medium</item>
+		<item name="android:textColor">?android:attr/textColorPrimary</item>
 	</style>
 
 </resources>
