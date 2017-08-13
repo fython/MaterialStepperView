@@ -13,4 +13,13 @@
 		<item name="android:textColor">?android:textColorSecondary</item>
 	</style>
 
+	<style name="Widget.Stepper" parent="">
+		<item name="step_normal_color">@color/material_grey_500</item>
+		<item name="step_activated_color">?attr/colorPrimary</item>
+		<item name="step_done_icon">@drawable/ic_done_white_16dp</item>
+		<item name="step_animation_duration">@android:integer/config_shortAnimTime</item>
+		<item name="step_line_color">@color/material_grey_500</item>
+		<item name="step_error_highlight_color">@color/material_red_500</item>
+	</style>
+
 </resources>
