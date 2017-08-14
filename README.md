@@ -2,7 +2,7 @@
 
 [![](https://jitpack.io/v/moe.feng/MaterialStepperView.svg)](https://jitpack.io/#moe.feng/MaterialStepperView)
 
-[Material Design Stepper](https://material.io/guidelines/components/steppers.html) Widgets on Android (SDK 21+, maybe can be lower)
+[Material Design Stepper](https://material.io/guidelines/components/steppers.html) Widgets on Android (SDK 17+)
 
 [Repo Wiki](https://github.com/fython/MaterialStepperView/wiki)
 
