@@ -4,7 +4,7 @@
 
 [Material Design Stepper](https://material.io/guidelines/components/steppers.html) Widgets on Android (SDK 17+)
 
-[Repo Wiki](https://github.com/fython/MaterialStepperView/wiki) [简体中文说明](./README-CN.md)
+[Repo Wiki](https://github.com/fython/MaterialStepperView/wiki) [绠�浣撲腑鏂囪鏄嶿(./README-CN.md)
 
 ## Import (Gradle)
 
