@@ -41,6 +41,20 @@ interface IStepperView {
 	@ColorInt int getActivatedColor();
 
 	/**
+	 * Get line color
+	 *
+	 * @return Line Color
+	 */
+	@ColorInt int getLineColor();
+
+	/**
+	 * Get error highlight color
+	 *
+	 * @return Error Highlight Color
+	 */
+	@ColorInt int getErrorColor();
+
+	/**
 	 * Get animation duration
 	 *
 	 * @return Animation Duration

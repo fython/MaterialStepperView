@@ -14,38 +14,56 @@
 			android:orientation="vertical"
 			android:gravity="center_horizontal">
 
-		<!-- Stepper Point -->
-		<moe.feng.common.stepperview.internal.ClipOvalFrameLayout
-				android:id="@+id/stepper_point_frame"
+		<FrameLayout
 				android:layout_width="@dimen/stepper_point_size"
-				android:layout_height="@dimen/stepper_point_size"
-				android:background="@drawable/stepper_point_background">
+				android:layout_height="@dimen/stepper_point_size">
 
-			<View
-					android:id="@+id/stepper_point_background"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:background="@color/material_grey_500"/>
 
-			<TextView
-					android:id="@+id/stepper_number"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
-					android:text="1"
-					android:maxLines="1"
-					android:maxLength="2"
-					android:textColor="@android:color/white"/>
+			<!-- Stepper Point -->
+			<moe.feng.common.stepperview.internal.ClipOvalFrameLayout
+					android:id="@+id/stepper_point_frame"
+					android:layout_width="@dimen/stepper_point_size"
+					android:layout_height="@dimen/stepper_point_size"
+					android:background="@drawable/stepper_point_background">
+
+				<View
+						android:id="@+id/stepper_point_background"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:background="@color/material_grey_500"/>
+
+				<TextView
+						android:id="@+id/stepper_number"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center"
+						tools:text="1"
+						android:textSize="12sp"
+						android:maxLines="1"
+						android:maxLength="2"
+						android:textColor="@android:color/white"/>
+
+				<ImageView
+						android:id="@+id/stepper_done_icon"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center"
+						android:alpha="0"
+						android:src="@drawable/ic_done_white_16dp"
+						android:importantForAccessibility="no"/>
+
+			</moe.feng.common.stepperview.internal.ClipOvalFrameLayout>
 
 			<ImageView
-					android:id="@+id/stepper_done_icon"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="center"
+					android:id="@+id/stepper_error_icon"
+					android:layout_width="@dimen/stepper_point_size"
+					android:layout_height="@dimen/stepper_point_size"
+					android:src="@drawable/ic_warning_black_24dp"
+					android:tint="@color/material_red_500"
 					android:alpha="0"
-					android:src="@drawable/ic_done_white_16dp"/>
+					android:importantForAccessibility="no"/>
 
-		</moe.feng.common.stepperview.internal.ClipOvalFrameLayout>
+		</FrameLayout>
 
 		<!-- Vertical Stepper Line -->
 		<View
@@ -71,17 +89,16 @@
 				android:id="@+id/stepper_title"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textAppearance="@android:style/TextAppearance.Material.Body2"
+				android:textAppearance="@style/TextAppearance.MaterialCompat.Body2"
 				android:maxLines="2"
-				android:text="Title"/>
+				tools:text="Title"/>
 
 		<TextView
 				android:id="@+id/stepper_summary"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:textAppearance="@android:style/TextAppearance.Material.Body1"
-				android:textColor="@color/material_grey_500"
-				android:text="Summary"/>
+				android:textAppearance="@style/TextAppearance.MaterialCompat.Body1"
+				tools:text="Summary"/>
 
 		<FrameLayout
 				android:id="@+id/stepper_custom_view"

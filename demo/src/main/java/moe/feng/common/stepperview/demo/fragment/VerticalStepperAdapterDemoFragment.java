@@ -60,11 +60,14 @@ public class VerticalStepperAdapterDemoFragment extends Fragment implements ISte
 		contentView.setText(
 				index == 0 ? R.string.content_step_0 : (index == 1 ? R.string.content_step_1 : R.string.content_step_2)
 		);
-		inflateView.findViewById(R.id.button_next).setOnClickListener(new View.OnClickListener() {
+		Button nextButton = inflateView.findViewById(R.id.button_next);
+		nextButton.setText(index == size() - 1 ? "Set error text" : getString(android.R.string.ok));
+		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				if (!mVerticalStepperView.nextStep()) {
-					Snackbar.make(mVerticalStepperView, "Finish", Snackbar.LENGTH_LONG).show();
+					mVerticalStepperView.setErrorText(0, mVerticalStepperView.getErrorText(0) == null ? "Test error" : null);
+					Snackbar.make(mVerticalStepperView, "Set!", Snackbar.LENGTH_LONG).show();
 				}
 			}
 		});

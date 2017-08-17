@@ -98,6 +98,15 @@
 							android:layout_marginStart="8dp"
 							android:text="@android:string/cancel"/>
 
+					<Button
+							android:id="@+id/button_test_error"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="8dp"
+							android:backgroundTint="@color/material_red_500"
+							android:textColor="@android:color/white"
+							android:text="Set Step 1 Error Text"/>
+
 				</LinearLayout>
 
 			</LinearLayout>

@@ -2,13 +2,13 @@
 
 [![](https://jitpack.io/v/moe.feng/MaterialStepperView.svg)](https://jitpack.io/#moe.feng/MaterialStepperView)
 
-[Material Design Stepper](https://material.io/guidelines/components/steppers.html) Widgets on Android (SDK 17+)
+[Material Design Stepper](https://material.io/guidelines/components/steppers.html) 控件 Android 版本 (SDK 17+)
 
-[Repo Wiki](https://github.com/fython/MaterialStepperView/wiki) [绠�浣撲腑鏂囪鏄嶿(./README-CN.md)
+[项目 Wiki](https://github.com/fython/MaterialStepperView/wiki)
 
-## Import (Gradle)
+## 导入 (Gradle)
 
-First, add it in your root build.gradle at the end of repositories:
+首先，在你的项目根目录的 build.gradle 加入 JitPack 的 Repositories：
 
 ```gradle
 allprojects {
@@ -19,7 +19,7 @@ allprojects {
 }
 ```
 
-Add the dependency to your app modules:
+在你的应用模块中加入依赖：
 
 ```gradle
 dependencies {
@@ -27,29 +27,29 @@ dependencies {
 }
 ```
 
-## Styles
+## 样式
 
-Currently, we have only made Vertical style stepper view.
+目前我们只做了竖直样式的 Stepper 组件。
 
-There will be more styles in the future.
+未来将会加入更多的样式。
 
-You can customize normal/activated point color, done icon, animation duration and animation enabled also. [How to?](https://github.com/fython/MaterialStepperView/wiki/Set-item-values-and-styles)
+你可以自定义正常/激活的圆点颜色、完成图标、动画时长、是否启用动画、线条颜色以及错误高亮颜色之类的参数。[How to?](https://github.com/fython/MaterialStepperView/wiki/Set-item-values-and-styles)
 
-### Vertical Stepper View
+### 竖直样式 Stepper
 
 [![Vertical Stepper View Demo](.readme/vertical.gif)](https://www.youtube.com/watch?v=y9gSwHKwxVM)
 
-[Read Wiki](https://github.com/fython/MaterialStepperView/wiki/Vertical-Style) and learn how to use
+[阅读 Wiki](https://github.com/fython/MaterialStepperView/wiki/Vertical-Style) 了解如何使用。
 
-## Support me
+## 支持
 
-If you like this library project and you are willing to support me, you can donate me via Alipay or PayPal.
+如果你很喜欢这个项目并且乐意支持我，你可以通过支付宝或 PayPal 捐赠我。
 
-Alipay: fythonx@gmail.com
+支付宝: fythonx@gmail.com
 
 PayPal: [https://www.paypal.me/fython](https://www.paypal.me/fython)
 
-## License
+## 协议
 
 ```
 MIT License

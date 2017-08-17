@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -24,15 +25,16 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	/**
 	 * View State
 	 */
-	private IStepperAdapter mViewAdapter;
+	private IStepperAdapter mStepperAdapter;
 	private int mCurrentStep = 0;
+	private String[] mErrorTexts = null;
 
 	/**
 	 * View attributes
 	 */
 	private boolean mAnimationEnabled;
 	private int mAnimationDuration;
-	private int mNormalColor, mActivatedColor;
+	private int mNormalColor, mActivatedColor, mLineColor, mErrorColor;
 	private Drawable mDoneIcon;
 
 	public VerticalStepperView(Context context) {
@@ -46,20 +48,18 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	public VerticalStepperView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 
-		mNormalColor = getResources().getColor(R.color.material_grey_500);
-		mActivatedColor = ViewUtils.getColorFromAttr(context, R.attr.colorPrimary);
-		mDoneIcon = getResources().getDrawable(R.drawable.ic_done_white_16dp);
-		mAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
 		prepareListView(context);
 
 		if (attrs != null) {
-			TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalStepperView, defStyleAttr, 0);
+			TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalStepperView,
+					defStyleAttr, R.style.Widget_Stepper);
 
 			mNormalColor = a.getColor(R.styleable.VerticalStepperView_step_normal_color, mNormalColor);
 			mActivatedColor = a.getColor(R.styleable.VerticalStepperView_step_activated_color, mActivatedColor);
 			mAnimationDuration = a.getInt(R.styleable.VerticalStepperView_step_animation_duration, mAnimationDuration);
 			mAnimationEnabled = a.getBoolean(R.styleable.VerticalStepperView_step_enable_animation, true);
+			mLineColor = a.getColor(R.styleable.VerticalStepperView_step_line_color, mLineColor);
+			mErrorColor = a.getColor(R.styleable.VerticalStepperView_step_error_highlight_color, mErrorColor);
 
 			if (a.hasValue(R.styleable.VerticalStepperView_step_done_icon)) {
 				mDoneIcon = a.getDrawable(R.styleable.VerticalStepperView_step_done_icon);
@@ -92,8 +92,45 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @param stepperAdapter Stepper Adapter
 	 */
 	public void setStepperAdapter(IStepperAdapter stepperAdapter) {
-		mViewAdapter = stepperAdapter;
+		mStepperAdapter = stepperAdapter;
+		updateSteppers();
+	}
+
+	/**
+	 * Notify the stepper adapter changed
+	 */
+	public void updateSteppers() {
+		if ((mErrorTexts != null && mErrorTexts.length != mStepperAdapter.size()) || mErrorTexts == null) {
+			mErrorTexts = new String[mStepperAdapter.size()];
+		}
 		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Set error text for item. If you want to remove error text, the errorText param should be null.
+	 *
+	 * @param index Index
+	 * @param errorText Error text or null
+	 */
+	public void setErrorText(int index, @Nullable String errorText) {
+		if (mErrorTexts == null) {
+			mErrorTexts = new String[mStepperAdapter.size()];
+		}
+		mErrorTexts[index] = errorText;
+		updateSteppers();
+	}
+
+	/**
+	 * Get error text of item
+	 *
+	 * @param index Index
+	 * @return Error text or null (means no error)
+	 */
+	public @Nullable String getErrorText(int index) {
+		if (mErrorTexts != null) {
+			return mErrorTexts[index];
+		}
+		return null;
 	}
 
 	/**
@@ -102,7 +139,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @return The count of steps
 	 */
 	public int getStepCount() {
-		return mViewAdapter != null ? mViewAdapter.size() : 0;
+		return mStepperAdapter != null ? mStepperAdapter.size() : 0;
 	}
 
 	/**
@@ -111,7 +148,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @return If stepper can go next
 	 */
 	public boolean canNext() {
-		return mViewAdapter != null && mCurrentStep < mViewAdapter.size() - 1;
+		return mStepperAdapter != null && mCurrentStep < mStepperAdapter.size() - 1;
 	}
 
 	/**
@@ -120,7 +157,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @return If stepper can go previous
 	 */
 	public boolean canPrev() {
-		return mViewAdapter != null && mCurrentStep > 0;
+		return mStepperAdapter != null && mCurrentStep > 0;
 	}
 
 	/**
@@ -130,9 +167,9 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 */
 	public boolean nextStep() {
 		if (canNext()) {
-			mViewAdapter.onHide(mCurrentStep);
+			mStepperAdapter.onHide(mCurrentStep);
 			mCurrentStep++;
-			mViewAdapter.onShow(mCurrentStep);
+			mStepperAdapter.onShow(mCurrentStep);
 			if (mAnimationEnabled) {
 				mAdapter.notifyItemRangeChanged(mCurrentStep - 1, 2);
 			} else {
@@ -150,9 +187,9 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 */
 	public boolean prevStep() {
 		if (canPrev()) {
-			mViewAdapter.onHide(mCurrentStep);
+			mStepperAdapter.onHide(mCurrentStep);
 			mCurrentStep--;
-			mViewAdapter.onShow(mCurrentStep);
+			mStepperAdapter.onShow(mCurrentStep);
 			if (mAnimationEnabled) {
 				mAdapter.notifyItemRangeChanged(mCurrentStep, 2);
 			} else {
@@ -170,7 +207,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 */
 	@Override
 	public IStepperAdapter getStepperAdapter() {
-		return mViewAdapter;
+		return mStepperAdapter;
 	}
 
 	/**
@@ -239,6 +276,64 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	@Override
 	public int getActivatedColor() {
 		return mActivatedColor;
+	}
+
+	/**
+	 * Set error highlight color
+	 *
+	 * @param color Error Highlight Color
+	 */
+	public void setErrorColor(@ColorInt int color) {
+		mErrorColor = color;
+		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Set error highlight color
+	 *
+	 * @param colorRes Error Highlight Color resource
+	 */
+	public void setErrorColorResource(@ColorRes int colorRes) {
+		setErrorColor(getResources().getColor(colorRes));
+	}
+
+	/**
+	 * Get error highlight color
+	 *
+	 * @return Error Highlight Color
+	 */
+	@Override
+	public int getErrorColor() {
+		return mErrorColor;
+	}
+
+	/**
+	 * Set line color
+	 *
+	 * @param color Line Color
+	 */
+	public void setLineColor(@ColorInt int color) {
+		mLineColor = color;
+		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * Set Line color
+	 *
+	 * @param colorRes Line Color resource
+	 */
+	public void setLineColorResource(@ColorRes int colorRes) {
+		setLineColor(getResources().getColor(colorRes));
+	}
+
+	/**
+	 * Get Line color
+	 *
+	 * @return Line Color
+	 */
+	@Override
+	public int getLineColor() {
+		return mLineColor;
 	}
 
 	/**
@@ -317,6 +412,9 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 			holder.mItemView.setAnimationDuration(mAnimationDuration);
 			holder.mItemView.setDoneIcon(mDoneIcon);
 			holder.mItemView.setAnimationEnabled(mAnimationEnabled);
+			holder.mItemView.setLineColor(mLineColor);
+			holder.mItemView.setErrorColor(mErrorColor);
+			holder.mItemView.setErrorText(mErrorTexts[position]);
 			if (getCurrentStep() > position) {
 				holder.mItemView.setState(VerticalStepperItemView.STATE_DONE);
 			} else if (getCurrentStep() < position) {

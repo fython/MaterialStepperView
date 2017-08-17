@@ -3,18 +3,19 @@ package moe.feng.common.stepperview;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.*;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
+import android.view.*;
+import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,8 +34,11 @@ public class VerticalStepperItemView extends FrameLayout {
 	private TextView mTitleText, mSummaryText;
 	private FrameLayout mCustomView, mPointFrame;
 	private LinearLayout mRightContainer;
-	private ImageView mDoneIconView;
+	private ImageView mDoneIconView, mErrorIconView;
 	private View mMarginBottomView;
+
+	private ValueAnimator mTitleColorAnimator, mSummaryColorAnimator, mPointColorAnimator;
+	private ViewPropertyAnimator mPointAnimator, mErrorIconAnimator;
 
 	/**
 	 * Step state
@@ -43,12 +47,13 @@ public class VerticalStepperItemView extends FrameLayout {
 	private int mIndex = 1;
 	private boolean isLastStep = false;
 	private int mState = STATE_NORMAL;
+	private String mErrorText = null; // If null means no error
 
 	/**
 	 * View attributes
 	 */
 	private int mAnimationDuration;
-	private int mNormalColor, mActivatedColor;
+	private int mNormalColor, mActivatedColor, mLineColor, mErrorColor;
 	private Drawable mDoneIcon;
 	private boolean mAnimationEnabled = true;
 
@@ -74,14 +79,11 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		prepareViews(context);
 
-		mNormalColor = ViewUtils.getColorFromAttr(context, android.R.attr.textColorSecondary);
-		mActivatedColor = ViewUtils.getColorFromAttr(context, R.attr.colorPrimary);
-		mDoneIcon = getResources().getDrawable(R.drawable.ic_done_white_16dp);
-		mAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 		DP = getResources().getDimensionPixelSize(R.dimen.dp1);
 
 		if (attrs != null) {
-			TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalStepperItemView, defStyleAttr, 0);
+			TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalStepperItemView,
+					defStyleAttr, R.style.Widget_Stepper);
 
 			mTitle = a.getString(R.styleable.VerticalStepperItemView_step_title);
 			mSummary = a.getString(R.styleable.VerticalStepperItemView_step_summary);
@@ -92,6 +94,8 @@ public class VerticalStepperItemView extends FrameLayout {
 			mActivatedColor = a.getColor(R.styleable.VerticalStepperItemView_step_activated_color, mActivatedColor);
 			mAnimationDuration = a.getInt(R.styleable.VerticalStepperItemView_step_animation_duration, mAnimationDuration);
 			mAnimationEnabled = a.getBoolean(R.styleable.VerticalStepperItemView_step_enable_animation, true);
+			mLineColor = a.getColor(R.styleable.VerticalStepperItemView_step_line_color, mLineColor);
+			mErrorColor = a.getColor(R.styleable.VerticalStepperItemView_step_error_highlight_color, mErrorColor);
 
 			if (a.hasValue(R.styleable.VerticalStepperItemView_step_done_icon)) {
 				mDoneIcon = a.getDrawable(R.styleable.VerticalStepperItemView_step_done_icon);
@@ -107,6 +111,8 @@ public class VerticalStepperItemView extends FrameLayout {
 		setIsLastStep(isLastStep);
 		setDoneIcon(mDoneIcon);
 		setAnimationEnabled(mAnimationEnabled);
+		setLineColor(mLineColor);
+		setErrorColor(mErrorColor);
 	}
 
 	@Override
@@ -143,6 +149,7 @@ public class VerticalStepperItemView extends FrameLayout {
 		mRightContainer = inflateView.findViewById(R.id.stepper_right_layout);
 		mDoneIconView = inflateView.findViewById(R.id.stepper_done_icon);
 		mMarginBottomView = inflateView.findViewById(R.id.stepper_margin_bottom);
+		mErrorIconView = inflateView.findViewById(R.id.stepper_error_icon);
 
 		// Add view
 		LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -168,18 +175,20 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @param state The state of this stepper item
 	 */
-	public void setState(@State int state) {
+	@SuppressLint("NewApi")
+	public synchronized void setState(@State int state) {
 		// Change point background
+		if (mPointColorAnimator != null) mPointColorAnimator.cancel();
 		if (state != STATE_NORMAL && mState == STATE_NORMAL) {
-			ValueAnimator animator = ObjectAnimator
+			mPointColorAnimator = ObjectAnimator
 					.ofArgb(mPointBackground, "backgroundColor", mNormalColor, mActivatedColor);
-			animator.setDuration(mAnimationDuration);
-			animator.start();
+			mPointColorAnimator.setDuration(mAnimationDuration);
+			mPointColorAnimator.start();
 		} else if (state == STATE_NORMAL && mState != STATE_NORMAL) {
-			ValueAnimator animator = ObjectAnimator
+			mPointColorAnimator = ObjectAnimator
 					.ofArgb(mPointBackground, "backgroundColor", mActivatedColor, mNormalColor);
-			animator.setDuration(mAnimationDuration);
-			animator.start();
+			mPointColorAnimator.setDuration(mAnimationDuration);
+			mPointColorAnimator.start();
 		} else {
 			mPointBackground.setBackgroundColor(state == STATE_NORMAL ? mNormalColor : mActivatedColor);
 		}
@@ -197,12 +206,59 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 
 		// Set title style
+		int lastTitleTextColor = mTitleText.getCurrentTextColor();
+		if (mTitleColorAnimator != null) mTitleColorAnimator.cancel();
 		mTitleText.setTextAppearance(getContext(), state == STATE_DONE ?
 				R.style.TextAppearance_Widget_Stepper_Done : (
 						state == STATE_NORMAL ?
 								R.style.TextAppearance_Widget_Stepper_Normal :
 								R.style.TextAppearance_Widget_Stepper_Selected
 				));
+
+		// Update error state
+		if (mErrorText != null) {
+			mTitleColorAnimator = ObjectAnimator
+					.ofArgb(mTitleText, "textColor",
+							lastTitleTextColor, mErrorColor);
+			mTitleColorAnimator.setDuration(mAnimationDuration);
+			mTitleColorAnimator.start();
+			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
+			mSummaryColorAnimator = ObjectAnimator
+					.ofArgb(mSummaryText, "textColor",
+							mSummaryText.getCurrentTextColor(), mErrorColor);
+			mSummaryColorAnimator.setDuration(mAnimationDuration);
+			mSummaryColorAnimator.start();
+
+			if (mErrorIconView.getAlpha() < 1F) {
+				if (mPointAnimator != null) mPointAnimator.cancel();
+				mPointAnimator = mPointFrame.animate().alpha(0F).setDuration(mAnimationDuration);
+				mPointAnimator.start();
+				mErrorIconView.setScaleX(0.6F);
+				mErrorIconView.setScaleY(0.6F);
+				if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
+				mErrorIconAnimator = mErrorIconView.animate().scaleX(1F).scaleY(1F)
+						.alpha(1F).setDuration(mAnimationDuration).setInterpolator(new OvershootInterpolator());
+				mErrorIconAnimator.start();
+			}
+		} else {
+			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
+			mSummaryColorAnimator = ObjectAnimator
+					.ofArgb(mSummaryText, "textColor",
+							mSummaryText.getCurrentTextColor(), mLineColor);
+			mSummaryColorAnimator.setDuration(mAnimationDuration);
+			mSummaryColorAnimator.start();
+
+			if (mPointFrame.getAlpha() < 1F) {
+				mPointFrame.setScaleX(0.6F);
+				mPointFrame.setScaleY(0.6F);
+				if (mPointAnimator != null) mPointAnimator.cancel();
+				mPointAnimator = mPointFrame.animate().scaleX(1F).scaleY(1F).alpha(1F).setDuration(mAnimationDuration);
+				mPointAnimator.start();
+				if (mErrorIconAnimator != null) mErrorIconAnimator.cancel();
+				mErrorIconAnimator = mErrorIconView.animate().alpha(0F).setDuration(mAnimationDuration);
+				mErrorIconAnimator.start();
+			}
+		}
 
 		// Set the visibility of views
 		mSummaryText.setVisibility(state != STATE_SELECTED && !TextUtils.isEmpty(mSummary) ? View.VISIBLE : View.GONE);
@@ -251,6 +307,39 @@ public class VerticalStepperItemView extends FrameLayout {
 	}
 
 	/**
+	 * Set error text for this step. If you want to remove error text, the param should be null.
+	 *
+	 * @param errorText The error text should be set or zero for removing error text
+	 */
+	public void setErrorText(@Nullable String errorText) {
+		mErrorText = errorText;
+		mSummaryText.setText(mErrorText != null ? mErrorText : mSummary);
+		setState(mState);
+	}
+
+	/**
+	 * Set error text for this step. If you want to remove error text, the param should be zero value.
+	 *
+	 * @param errorTextRes The title resource should be set
+	 */
+	public void setErrorText(@StringRes int errorTextRes) {
+		if (errorTextRes != 0) {
+			setErrorText(getResources().getString(errorTextRes));
+		} else {
+			setErrorText(null);
+		}
+	}
+
+	/**
+	 * Get the title of this step
+	 *
+	 * @return The title of this step
+	 */
+	public @Nullable String getErrorText() {
+		return mErrorText;
+	}
+
+	/**
 	 * Set summary for this step.
 	 * If you set a null value, it will hide the summary view.
 	 *
@@ -258,8 +347,8 @@ public class VerticalStepperItemView extends FrameLayout {
 	 */
 	public void setSummary(@Nullable String summary) {
 		mSummary = summary;
-		mSummaryText.setText(summary);
-		mSummaryText.setVisibility(mState != STATE_SELECTED && !TextUtils.isEmpty(mSummary) ? View.VISIBLE : View.GONE);
+		mSummaryText.setText(mErrorText != null ? mErrorText : summary);
+		mSummaryText.setVisibility(mState != STATE_SELECTED && !TextUtils.isEmpty(mSummaryText.getText()) ? View.VISIBLE : View.GONE);
 	}
 
 	/**
@@ -521,6 +610,72 @@ public class VerticalStepperItemView extends FrameLayout {
 	}
 
 	/**
+	 * Get line color
+	 *
+	 * @return Line Color
+	 */
+	public @ColorInt int getLineColor() {
+		return mLineColor;
+	}
+
+	/**
+	 * Set line color
+	 *
+	 * @param color Line Color
+	 */
+	public void setLineColor(@ColorInt int color) {
+		mLineColor = color;
+		mLineView.setBackgroundColor(color);
+	}
+
+	/**
+	 * Set line color
+	 *
+	 * @param colorRes Line Color resource
+	 */
+	public void setLineColorResource(@ColorRes int colorRes) {
+		setLineColor(getResources().getColor(colorRes));
+	}
+
+	/**
+	 * Get error highlight color
+	 *
+	 * @return Error Highlight Color
+	 */
+	public @ColorInt int getErrorColor() {
+		return mErrorColor;
+	}
+
+	/**
+	 * Set error highlight color
+	 *
+	 * @param color Error Highlight Color
+	 */
+	public void setErrorColor(@ColorInt int color) {
+		if (isPreLollipop()) {
+			mErrorIconView.getDrawable().setColorFilter(color, PorterDuff.Mode.DST_IN);
+		} else {
+			mErrorIconView.getDrawable().setTint(color);
+		}
+		if (mErrorText != null && color != mErrorColor) {
+			if (mTitleColorAnimator != null && mTitleColorAnimator.isRunning()) mTitleColorAnimator.cancel();
+			if (mSummaryColorAnimator != null && mSummaryColorAnimator.isRunning()) mSummaryColorAnimator.cancel();
+			mTitleText.setTextColor(color);
+			mSummaryText.setTextColor(color);
+		}
+		mErrorColor = color;
+	}
+
+	/**
+	 * Set error highlight color
+	 *
+	 * @param colorRes Error Highlight Color resource
+	 */
+	public void setErrorColorResource(@ColorRes int colorRes) {
+		setErrorColor(getResources().getColor(colorRes));
+	}
+
+	/**
 	 * Get activated point color
 	 *
 	 * @return Activated Point Color
@@ -547,6 +702,9 @@ public class VerticalStepperItemView extends FrameLayout {
 		state.normalColor = mNormalColor;
 		state.activatedColor = mActivatedColor;
 		state.doneIcon = mDoneIcon;
+		state.errorText = mErrorText;
+		state.lineColor = mLineColor;
+		state.errorColor = mErrorColor;
 		bundle.putParcelable(ItemViewState.STATE, state);
 		return bundle;
 	}
@@ -566,6 +724,9 @@ public class VerticalStepperItemView extends FrameLayout {
 			setNormalColor(viewState.normalColor);
 			setActivatedColor(viewState.activatedColor);
 			setDoneIcon(viewState.doneIcon);
+			setErrorText(viewState.errorText);
+			setLineColor(viewState.lineColor);
+			setErrorColor(viewState.errorColor);
 			return;
 		}
 		super.onRestoreInstanceState(BaseSavedState.EMPTY_STATE);
@@ -579,15 +740,20 @@ public class VerticalStepperItemView extends FrameLayout {
 		int index = 1;
 		boolean isLastStep = false;
 		int state = STATE_NORMAL;
+		String errorText;
 
 		int animationDuration;
-		int normalColor, activatedColor;
+		int normalColor, activatedColor, lineColor, errorColor;
 		Drawable doneIcon;
 
 		ItemViewState(Parcelable superState) {
 			super(superState);
 		}
 
+	}
+
+	private static boolean isPreLollipop() {
+		return Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
 	}
 
 }
