@@ -2,6 +2,7 @@ package moe.feng.common.stepperview;
 
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -180,13 +181,11 @@ public class VerticalStepperItemView extends FrameLayout {
 		// Change point background
 		if (mPointColorAnimator != null) mPointColorAnimator.cancel();
 		if (state != STATE_NORMAL && mState == STATE_NORMAL) {
-			mPointColorAnimator = ObjectAnimator
-					.ofArgb(mPointBackground, "backgroundColor", mNormalColor, mActivatedColor);
+            mPointColorAnimator = ofArgb(mPointBackground, "backgroundColor", mNormalColor, mActivatedColor);
 			mPointColorAnimator.setDuration(mAnimationDuration);
 			mPointColorAnimator.start();
 		} else if (state == STATE_NORMAL && mState != STATE_NORMAL) {
-			mPointColorAnimator = ObjectAnimator
-					.ofArgb(mPointBackground, "backgroundColor", mActivatedColor, mNormalColor);
+            mPointColorAnimator = ofArgb(mPointBackground, "backgroundColor", mActivatedColor, mNormalColor);
 			mPointColorAnimator.setDuration(mAnimationDuration);
 			mPointColorAnimator.start();
 		} else {
@@ -217,15 +216,11 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		// Update error state
 		if (mErrorText != null) {
-			mTitleColorAnimator = ObjectAnimator
-					.ofArgb(mTitleText, "textColor",
-							lastTitleTextColor, mErrorColor);
+            mTitleColorAnimator = ofArgb(mTitleText, "textColor",lastTitleTextColor, mErrorColor);
 			mTitleColorAnimator.setDuration(mAnimationDuration);
 			mTitleColorAnimator.start();
 			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
-			mSummaryColorAnimator = ObjectAnimator
-					.ofArgb(mSummaryText, "textColor",
-							mSummaryText.getCurrentTextColor(), mErrorColor);
+            mSummaryColorAnimator = ofArgb(mSummaryText, "textColor",mSummaryText.getCurrentTextColor(), mErrorColor);
 			mSummaryColorAnimator.setDuration(mAnimationDuration);
 			mSummaryColorAnimator.start();
 
@@ -242,9 +237,7 @@ public class VerticalStepperItemView extends FrameLayout {
 			}
 		} else {
 			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
-			mSummaryColorAnimator = ObjectAnimator
-					.ofArgb(mSummaryText, "textColor",
-							mSummaryText.getCurrentTextColor(), mLineColor);
+            mSummaryColorAnimator = ofArgb(mSummaryText, "textColor",mSummaryText.getCurrentTextColor(), mLineColor);
 			mSummaryColorAnimator.setDuration(mAnimationDuration);
 			mSummaryColorAnimator.start();
 
@@ -756,4 +749,38 @@ public class VerticalStepperItemView extends FrameLayout {
 		return Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
 	}
 
+	/**
+     * ObjectAnimator.ofArgb needs API level 21.
+     * use ofObject instead of it
+     * @param target target view
+     * @param propertyName property name
+     * @param startValue start color
+     * @param endValue end color
+     * @return animator
+     */
+    private ValueAnimator ofArgb(Object target, String propertyName, Object startValue, Object endValue) {
+        ValueAnimator animator = ObjectAnimator
+                .ofObject(target, propertyName, new TypeEvaluator() {
+                    @Override
+                    public Object evaluate(float fraction, Object startValue, Object endValue) {
+                        int startInt = (Integer) startValue;
+                        int startA = (startInt >> 24) & 0xff;
+                        int startR = (startInt >> 16) & 0xff;
+                        int startG = (startInt >> 8) & 0xff;
+                        int startB = startInt & 0xff;
+
+                        int endInt = (Integer) endValue;
+                        int endA = (endInt >> 24) & 0xff;
+                        int endR = (endInt >> 16) & 0xff;
+                        int endG = (endInt >> 8) & 0xff;
+                        int endB = endInt & 0xff;
+
+                        return (int) ((startA + (int) (fraction * (endA - startA))) << 24) |
+                                (int) ((startR + (int) (fraction * (endR - startR))) << 16) |
+                                (int) ((startG + (int) (fraction * (endG - startG))) << 8) |
+                                (int) ((startB + (int) (fraction * (endB - startB))));
+                    }
+                }, startValue, endValue);
+        return animator;
+    }
 }
