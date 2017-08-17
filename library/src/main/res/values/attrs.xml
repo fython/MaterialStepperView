@@ -23,6 +23,7 @@
 		<attr name="step_index" format="integer"/>
 		<attr name="step_title" format="string"/>
 		<attr name="step_summary" format="string"/>
+		<attr name="step_summary_done" format="string"/>
 		<attr name="step_is_last" format="boolean"/>
 		<attr name="step_state" format="enum">
 			<enum name="normal" value="0"/>

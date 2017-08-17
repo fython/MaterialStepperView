@@ -43,7 +43,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	/**
 	 * Step state
 	 */
-	private String mTitle, mSummary;
+	private String mTitle, mSummary, mSummaryFinished = null;
 	private int mIndex = 1;
 	private boolean isLastStep = false;
 	private int mState = STATE_NORMAL;
@@ -87,6 +87,7 @@ public class VerticalStepperItemView extends FrameLayout {
 
 			mTitle = a.getString(R.styleable.VerticalStepperItemView_step_title);
 			mSummary = a.getString(R.styleable.VerticalStepperItemView_step_summary);
+			mSummaryFinished = a.getString(R.styleable.VerticalStepperItemView_step_summary_done);
 			mIndex = a.getInt(R.styleable.VerticalStepperItemView_step_index, 1);
 			mState = a.getInt(R.styleable.VerticalStepperItemView_step_state, STATE_NORMAL);
 			isLastStep = a.getBoolean(R.styleable.VerticalStepperItemView_step_is_last, false);
@@ -105,7 +106,7 @@ public class VerticalStepperItemView extends FrameLayout {
 		}
 
 		setTitle(mTitle);
-		setSummary(mSummary);
+		updateSummaryView();
 		setIndex(mIndex);
 		setState(mState);
 		setIsLastStep(isLastStep);
@@ -263,6 +264,7 @@ public class VerticalStepperItemView extends FrameLayout {
 		mState = state;
 
 		updateMarginBottom();
+		updateSummaryView();
 	}
 
 	/**
@@ -343,8 +345,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 */
 	public void setSummary(@Nullable String summary) {
 		mSummary = summary;
-		mSummaryText.setText(mErrorText != null ? mErrorText : summary);
-		mSummaryText.setVisibility(mState != STATE_SELECTED && !TextUtils.isEmpty(mSummaryText.getText()) ? View.VISIBLE : View.GONE);
+		updateSummaryView();
 	}
 
 	/**
@@ -363,6 +364,46 @@ public class VerticalStepperItemView extends FrameLayout {
 	 */
 	public String getSummary() {
 		return mSummary;
+	}
+
+	/**
+	 * Set finished summary for this step.
+	 * If you set a null value, it will hide the summary view or show default summary.
+	 *
+	 * @param summary The summary should be set or null
+	 */
+	public void setSummaryFinished(@Nullable String summary) {
+		mSummaryFinished = summary;
+		updateSummaryView();
+	}
+
+	/**
+	 * Set summary for this step.
+	 *
+	 * @param summaryRes The summary resource should be set
+	 */
+	public void setSummaryFinished(@StringRes int summaryRes) {
+		setSummaryFinished(getResources().getString(summaryRes));
+	}
+
+	/**
+	 * Get the summary of this step
+	 *
+	 * @return The summary of this step
+	 */
+	public String getSummaryFinished() {
+		return mSummaryFinished;
+	}
+
+	/**
+	 * Update summary view
+	 */
+	private void updateSummaryView() {
+		mSummaryText.setText(
+				mErrorText != null ? mErrorText
+						: (mSummaryFinished != null && mState == STATE_DONE) ? mSummaryFinished : mSummary
+		);
+		mSummaryText.setVisibility(mState != STATE_SELECTED && !TextUtils.isEmpty(mSummaryText.getText()) ? View.VISIBLE : View.GONE);
 	}
 
 	/**
@@ -691,6 +732,7 @@ public class VerticalStepperItemView extends FrameLayout {
 		ItemViewState state = new ItemViewState(super.onSaveInstanceState());
 		state.title = mTitle;
 		state.summary = mSummary;
+		state.summaryFinished = mSummaryFinished;
 		state.index = mIndex;
 		state.isLastStep = isLastStep;
 		state.state = mState;
@@ -713,6 +755,7 @@ public class VerticalStepperItemView extends FrameLayout {
 			super.onRestoreInstanceState(viewState.getSuperState());
 			setTitle(viewState.title);
 			setSummary(viewState.summary);
+			setSummaryFinished(viewState.summaryFinished);
 			setIndex(viewState.index);
 			setIsLastStep(viewState.isLastStep);
 			setState(viewState.state);
@@ -732,7 +775,7 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		private static final String STATE = VerticalStepperItemView.class.getSimpleName() + ".STATE";
 
-		String title, summary;
+		String title, summary, summaryFinished;
 		int index = 1;
 		boolean isLastStep = false;
 		int state = STATE_NORMAL;

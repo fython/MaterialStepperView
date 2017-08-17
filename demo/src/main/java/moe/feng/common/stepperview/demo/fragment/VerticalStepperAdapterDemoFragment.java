@@ -40,9 +40,9 @@ public class VerticalStepperAdapterDemoFragment extends Fragment implements ISte
 	public @Nullable String getSummary(int index) {
 		switch (index) {
 			case 0:
-				return "Summarized if needed";
+				return "Summarized if needed" + (mVerticalStepperView.getCurrentStep() > index ? "; isDone!" : "");
 			case 2:
-				return "Last step";
+				return "Last step" + (mVerticalStepperView.getCurrentStep() > index ? "; isDone!" : "");
 			default:
 				return null;
 		}

@@ -19,6 +19,7 @@
 				app:step_index="1"
 				app:step_title="Step 1"
 				app:step_summary="Summarized if needed"
+				app:step_summary_done="Summarized if needed. Done"
 				app:step_state="selected">
 
 			<LinearLayout
@@ -121,6 +122,7 @@
 				app:step_index="3"
 				app:step_title="Step 3"
 				app:step_summary="Last step"
+				app:step_summary_done="Last step. Done"
 				app:step_is_last="true">
 
 			<LinearLayout
