@@ -175,18 +175,17 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @param state The state of this stepper item
 	 */
-	@SuppressLint("NewApi")
 	public synchronized void setState(@State int state) {
 		// Change point background
 		if (mPointColorAnimator != null) mPointColorAnimator.cancel();
 		if (state != STATE_NORMAL && mState == STATE_NORMAL) {
-			mPointColorAnimator = ObjectAnimator
-					.ofArgb(mPointBackground, "backgroundColor", mNormalColor, mActivatedColor);
+			mPointColorAnimator = ViewUtils.createArgbAnimator(
+					mPointBackground, "backgroundColor", mNormalColor, mActivatedColor);
 			mPointColorAnimator.setDuration(mAnimationDuration);
 			mPointColorAnimator.start();
 		} else if (state == STATE_NORMAL && mState != STATE_NORMAL) {
-			mPointColorAnimator = ObjectAnimator
-					.ofArgb(mPointBackground, "backgroundColor", mActivatedColor, mNormalColor);
+			mPointColorAnimator = ViewUtils.createArgbAnimator(
+					mPointBackground, "backgroundColor", mActivatedColor, mNormalColor);
 			mPointColorAnimator.setDuration(mAnimationDuration);
 			mPointColorAnimator.start();
 		} else {
@@ -217,15 +216,13 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		// Update error state
 		if (mErrorText != null) {
-			mTitleColorAnimator = ObjectAnimator
-					.ofArgb(mTitleText, "textColor",
-							lastTitleTextColor, mErrorColor);
+			mTitleColorAnimator = ViewUtils.createArgbAnimator(
+					mTitleText, "textColor", lastTitleTextColor, mErrorColor);
 			mTitleColorAnimator.setDuration(mAnimationDuration);
 			mTitleColorAnimator.start();
 			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
-			mSummaryColorAnimator = ObjectAnimator
-					.ofArgb(mSummaryText, "textColor",
-							mSummaryText.getCurrentTextColor(), mErrorColor);
+			mSummaryColorAnimator = ViewUtils.createArgbAnimator(
+					mSummaryText, "textColor", mSummaryText.getCurrentTextColor(), mErrorColor);
 			mSummaryColorAnimator.setDuration(mAnimationDuration);
 			mSummaryColorAnimator.start();
 
@@ -242,9 +239,8 @@ public class VerticalStepperItemView extends FrameLayout {
 			}
 		} else {
 			if (mSummaryColorAnimator != null) mSummaryColorAnimator.cancel();
-			mSummaryColorAnimator = ObjectAnimator
-					.ofArgb(mSummaryText, "textColor",
-							mSummaryText.getCurrentTextColor(), mLineColor);
+			mSummaryColorAnimator = ViewUtils.createArgbAnimator(
+					mSummaryText, "textColor", mSummaryText.getCurrentTextColor(), mLineColor);
 			mSummaryColorAnimator.setDuration(mAnimationDuration);
 			mSummaryColorAnimator.start();
 
