@@ -56,6 +56,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	private int mNormalColor, mActivatedColor, mLineColor, mErrorColor;
 	private Drawable mDoneIcon;
 	private boolean mAnimationEnabled = true;
+	private boolean mAlwaysShowSummary = false;
 
 	/**
 	 * The bind views
@@ -97,6 +98,7 @@ public class VerticalStepperItemView extends FrameLayout {
 			mAnimationEnabled = a.getBoolean(R.styleable.VerticalStepperItemView_step_enable_animation, true);
 			mLineColor = a.getColor(R.styleable.VerticalStepperItemView_step_line_color, mLineColor);
 			mErrorColor = a.getColor(R.styleable.VerticalStepperItemView_step_error_highlight_color, mErrorColor);
+			mAlwaysShowSummary = a.getBoolean(R.styleable.VerticalStepperItemView_step_show_summary_always, mAlwaysShowSummary);
 
 			if (a.hasValue(R.styleable.VerticalStepperItemView_step_done_icon)) {
 				mDoneIcon = a.getDrawable(R.styleable.VerticalStepperItemView_step_done_icon);
@@ -304,7 +306,26 @@ public class VerticalStepperItemView extends FrameLayout {
 		return mTitle;
 	}
 
-	/**
+    /**
+     * Set should show summary always.
+     *
+     * @param alwaysShowSummary new value
+     */
+    public void setAlwaysShowSummary(boolean alwaysShowSummary) {
+        mAlwaysShowSummary = alwaysShowSummary;
+        updateSummaryView();
+    }
+
+    /**
+     * Should show summary always
+     *
+     * @return If should show summary always
+     */
+    public boolean isAlwaysShowSummary() {
+        return mAlwaysShowSummary;
+    }
+
+    /**
 	 * Set error text for this step. If you want to remove error text, the param should be null.
 	 *
 	 * @param errorText The error text should be set or zero for removing error text
@@ -403,7 +424,10 @@ public class VerticalStepperItemView extends FrameLayout {
 				mErrorText != null ? mErrorText
 						: (mSummaryFinished != null && mState == STATE_DONE) ? mSummaryFinished : mSummary
 		);
-		mSummaryText.setVisibility(mState != STATE_SELECTED && !TextUtils.isEmpty(mSummaryText.getText()) ? View.VISIBLE : View.GONE);
+		mSummaryText.setVisibility(
+		        (mState != STATE_SELECTED || mAlwaysShowSummary) && !TextUtils.isEmpty(mSummaryText.getText()) ?
+                        View.VISIBLE : View.GONE
+        );
 	}
 
 	/**
@@ -784,6 +808,8 @@ public class VerticalStepperItemView extends FrameLayout {
 		int animationDuration;
 		int normalColor, activatedColor, lineColor, errorColor;
 		Drawable doneIcon;
+
+		boolean alwaysShowSummary;
 
 		ItemViewState(Parcelable superState) {
 			super(superState);

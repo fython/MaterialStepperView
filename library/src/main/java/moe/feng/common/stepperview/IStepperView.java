@@ -68,4 +68,11 @@ interface IStepperView {
 	 */
 	Drawable getDoneIcon();
 
+    /**
+     * Should show summary always
+     *
+     * @return If should show summary always
+     */
+    boolean isAlwaysShowSummary();
+
 }

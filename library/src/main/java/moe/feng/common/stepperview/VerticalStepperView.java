@@ -36,6 +36,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	private int mAnimationDuration;
 	private int mNormalColor, mActivatedColor, mLineColor, mErrorColor;
 	private Drawable mDoneIcon;
+	private boolean mAlwaysShowSummary = false;
 
 	public VerticalStepperView(Context context) {
 		this(context, null);
@@ -60,6 +61,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 			mAnimationEnabled = a.getBoolean(R.styleable.VerticalStepperView_step_enable_animation, true);
 			mLineColor = a.getColor(R.styleable.VerticalStepperView_step_line_color, mLineColor);
 			mErrorColor = a.getColor(R.styleable.VerticalStepperView_step_error_highlight_color, mErrorColor);
+			mAlwaysShowSummary = a.getBoolean(R.styleable.VerticalStepperView_step_show_summary_always, mAlwaysShowSummary);
 
 			if (a.hasValue(R.styleable.VerticalStepperView_step_done_icon)) {
 				mDoneIcon = a.getDrawable(R.styleable.VerticalStepperView_step_done_icon);
@@ -105,6 +107,26 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 		}
 		mAdapter.notifyDataSetChanged();
 	}
+
+    /**
+     * Set should show summary always.
+     *
+     * @param alwaysShowSummary new value
+     */
+    public void setAlwaysShowSummary(boolean alwaysShowSummary) {
+        mAlwaysShowSummary = alwaysShowSummary;
+        updateSteppers();
+    }
+
+    /**
+     * Should show summary always
+     *
+     * @return If should show summary always
+     */
+    @Override
+    public boolean isAlwaysShowSummary() {
+        return mAlwaysShowSummary;
+    }
 
 	/**
 	 * Set error text for item. If you want to remove error text, the errorText param should be null.
@@ -415,6 +437,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 			holder.mItemView.setLineColor(mLineColor);
 			holder.mItemView.setErrorColor(mErrorColor);
 			holder.mItemView.setErrorText(mErrorTexts[position]);
+			holder.mItemView.setAlwaysShowSummary(mAlwaysShowSummary);
 			if (getCurrentStep() > position) {
 				holder.mItemView.setState(VerticalStepperItemView.STATE_DONE);
 			} else if (getCurrentStep() < position) {
