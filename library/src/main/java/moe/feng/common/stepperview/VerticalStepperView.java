@@ -27,7 +27,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 */
 	private IStepperAdapter mStepperAdapter;
 	private int mCurrentStep = 0;
-	private String[] mErrorTexts = null;
+	private CharSequence[] mErrorTexts = null;
 
 	/**
 	 * View attributes
@@ -112,7 +112,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @param index Index
 	 * @param errorText Error text or null
 	 */
-	public void setErrorText(int index, @Nullable String errorText) {
+	public void setErrorText(int index, @Nullable CharSequence errorText) {
 		if (mErrorTexts == null) {
 			mErrorTexts = new String[mStepperAdapter.size()];
 		}
@@ -126,7 +126,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @param index Index
 	 * @return Error text or null (means no error)
 	 */
-	public @Nullable String getErrorText(int index) {
+	public @Nullable CharSequence getErrorText(int index) {
 		if (mErrorTexts != null) {
 			return mErrorTexts[index];
 		}

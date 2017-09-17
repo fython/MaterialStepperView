@@ -43,11 +43,11 @@ public class VerticalStepperItemView extends FrameLayout {
 	/**
 	 * Step state
 	 */
-	private String mTitle, mSummary, mSummaryFinished = null;
+	private CharSequence mTitle, mSummary, mSummaryFinished = null;
 	private int mIndex = 1;
 	private boolean isLastStep = false;
 	private int mState = STATE_NORMAL;
-	private String mErrorText = null; // If null means no error
+	private CharSequence mErrorText = null; // If null means no error
 
 	/**
 	 * View attributes
@@ -281,7 +281,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @param title The title should be set
 	 */
-	public void setTitle(String title) {
+	public void setTitle(CharSequence title) {
 		mTitle = title;
 		mTitleText.setText(title);
 	}
@@ -300,7 +300,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return The title of this step
 	 */
-	public String getTitle() {
+	public CharSequence getTitle() {
 		return mTitle;
 	}
 
@@ -309,7 +309,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @param errorText The error text should be set or zero for removing error text
 	 */
-	public void setErrorText(@Nullable String errorText) {
+	public void setErrorText(@Nullable CharSequence errorText) {
 		mErrorText = errorText;
 		mSummaryText.setText(mErrorText != null ? mErrorText : mSummary);
 		setState(mState);
@@ -333,7 +333,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return The title of this step
 	 */
-	public @Nullable String getErrorText() {
+	public @Nullable CharSequence getErrorText() {
 		return mErrorText;
 	}
 
@@ -343,7 +343,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @param summary The summary should be set or null
 	 */
-	public void setSummary(@Nullable String summary) {
+	public void setSummary(@Nullable CharSequence summary) {
 		mSummary = summary;
 		updateSummaryView();
 	}
@@ -362,7 +362,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return The summary of this step
 	 */
-	public String getSummary() {
+	public CharSequence getSummary() {
 		return mSummary;
 	}
 
@@ -372,7 +372,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @param summary The summary should be set or null
 	 */
-	public void setSummaryFinished(@Nullable String summary) {
+	public void setSummaryFinished(@Nullable CharSequence summary) {
 		mSummaryFinished = summary;
 		updateSummaryView();
 	}
@@ -391,7 +391,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return The summary of this step
 	 */
-	public String getSummaryFinished() {
+	public CharSequence getSummaryFinished() {
 		return mSummaryFinished;
 	}
 
@@ -775,11 +775,11 @@ public class VerticalStepperItemView extends FrameLayout {
 
 		private static final String STATE = VerticalStepperItemView.class.getSimpleName() + ".STATE";
 
-		String title, summary, summaryFinished;
+		CharSequence title, summary, summaryFinished;
 		int index = 1;
 		boolean isLastStep = false;
 		int state = STATE_NORMAL;
-		String errorText;
+		CharSequence errorText;
 
 		int animationDuration;
 		int normalColor, activatedColor, lineColor, errorColor;

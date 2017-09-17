@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,17 +33,19 @@ public class VerticalStepperAdapterDemoFragment extends Fragment implements ISte
 	}
 
 	@Override
-	public @NonNull String getTitle(int index) {
+	public @NonNull CharSequence getTitle(int index) {
 		return "Step " + index;
 	}
 
 	@Override
-	public @Nullable String getSummary(int index) {
+	public @Nullable CharSequence getSummary(int index) {
 		switch (index) {
 			case 0:
-				return "Summarized if needed" + (mVerticalStepperView.getCurrentStep() > index ? "; isDone!" : "");
+				return Html.fromHtml("Summarized if needed"
+						+ (mVerticalStepperView.getCurrentStep() > index ? "; <b>isDone!</b>" : ""));
 			case 2:
-				return "Last step" + (mVerticalStepperView.getCurrentStep() > index ? "; isDone!" : "");
+				return Html.fromHtml("Last step"
+                        + (mVerticalStepperView.getCurrentStep() > index ? "; <b>isDone!</b>" : ""));
 			default:
 				return null;
 		}
