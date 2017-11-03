@@ -23,14 +23,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 
-    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-    compile "com.android.support:design:$supportLibraryVersion"
-    compile "com.android.support:customtabs:$supportLibraryVersion"
-    compile 'moe.feng:AlipayZeroSdk:1.1'
-    compile project(':library')
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.android.support:design:$supportLibraryVersion"
+    implementation "com.android.support:customtabs:$supportLibraryVersion"
+    implementation 'moe.feng:AlipayZeroSdk:1.1'
+    implementation project(':library')
 }
