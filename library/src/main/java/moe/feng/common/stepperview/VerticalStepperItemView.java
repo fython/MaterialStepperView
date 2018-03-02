@@ -1,15 +1,13 @@
 package moe.feng.common.stepperview;
 
 import android.animation.LayoutTransition;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.*;
 import android.text.TextUtils;
@@ -757,7 +755,6 @@ public class VerticalStepperItemView extends FrameLayout {
 	// Save/Restore View Instance State
 	@Override
 	public Parcelable onSaveInstanceState() {
-		Bundle bundle = new Bundle();
 		ItemViewState state = new ItemViewState(super.onSaveInstanceState());
 		state.title = mTitle;
 		state.summary = mSummary;
@@ -765,23 +762,14 @@ public class VerticalStepperItemView extends FrameLayout {
 		state.index = mIndex;
 		state.isLastStep = isLastStep;
 		state.state = mState;
-		state.animationDuration = mAnimationDuration;
-		state.normalColor = mNormalColor;
-		state.activatedColor = mActivatedColor;
-		state.doneIcon = mDoneIcon;
 		state.errorText = mErrorText;
-		state.lineColor = mLineColor;
-		state.errorColor = mErrorColor;
-		state.alwaysShowSummary = mAlwaysShowSummary;
-		bundle.putParcelable(ItemViewState.STATE, state);
-		return bundle;
+		return state;
 	}
 
 	@Override
 	public void onRestoreInstanceState(Parcelable state) {
-		if (state instanceof Bundle) {
-			Bundle bundle = (Bundle) state;
-			ItemViewState viewState = bundle.getParcelable(ItemViewState.STATE);
+		if (state instanceof ItemViewState) {
+			ItemViewState viewState = (ItemViewState) state;
 			super.onRestoreInstanceState(viewState.getSuperState());
 			setTitle(viewState.title);
 			setSummary(viewState.summary);
@@ -789,14 +777,7 @@ public class VerticalStepperItemView extends FrameLayout {
 			setIndex(viewState.index);
 			setIsLastStep(viewState.isLastStep);
 			setState(viewState.state);
-			setAnimationDuration(viewState.animationDuration);
-			setNormalColor(viewState.normalColor);
-			setActivatedColor(viewState.activatedColor);
-			setDoneIcon(viewState.doneIcon);
 			setErrorText(viewState.errorText);
-			setLineColor(viewState.lineColor);
-			setErrorColor(viewState.errorColor);
-			setAlwaysShowSummary(viewState.alwaysShowSummary);
 			return;
 		}
 		super.onRestoreInstanceState(BaseSavedState.EMPTY_STATE);
@@ -804,23 +785,51 @@ public class VerticalStepperItemView extends FrameLayout {
 
 	protected static class ItemViewState extends BaseSavedState {
 
-		private static final String STATE = VerticalStepperItemView.class.getSimpleName() + ".STATE";
-
 		CharSequence title, summary, summaryFinished;
 		int index = 1;
 		boolean isLastStep = false;
 		int state = STATE_NORMAL;
 		CharSequence errorText;
 
-		int animationDuration;
-		int normalColor, activatedColor, lineColor, errorColor;
-		Drawable doneIcon;
-
-		boolean alwaysShowSummary;
-
 		ItemViewState(Parcelable superState) {
 			super(superState);
 		}
+
+		private ItemViewState(Parcel in) {
+		    super(in);
+		    title = in.readString();
+		    summary = in.readString();
+		    summaryFinished = in.readString();
+		    index = in.readInt();
+		    isLastStep = in.readByte() != 0;
+		    state = in.readInt();
+		    errorText = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+		    super.writeToParcel(out, flags);
+		    out.writeString(title != null ? title.toString() : null);
+            out.writeString(summary != null ? summary.toString() : null);
+            out.writeString(summaryFinished != null ? summaryFinished.toString() : null);
+            out.writeInt(index);
+            out.writeByte(isLastStep ? (byte) 1 : (byte) 0);
+            out.writeInt(state);
+            out.writeString(errorText != null ? errorText.toString() : null);
+        }
+
+        public static final Parcelable.Creator<ItemViewState> CREATOR =
+                new Parcelable.Creator<ItemViewState>() {
+                    @Override
+                    public ItemViewState createFromParcel(Parcel source) {
+                        return new ItemViewState(source);
+                    }
+
+                    @Override
+                    public ItemViewState[] newArray(int size) {
+                        return new ItemViewState[size];
+                    }
+		        };
 
 	}
 
