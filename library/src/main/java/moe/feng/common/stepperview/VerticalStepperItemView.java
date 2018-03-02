@@ -170,7 +170,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	}
 
 	private void updateMarginBottom() {
-		mMarginBottomView.getLayoutParams().height = (!isLastStep ? (mState != STATE_SELECTED ? 28 : 36) : 0) * DP;
+		mMarginBottomView.getLayoutParams().height = (!isLastStep ? (mState != STATE_SELECTED ? 28 : 36) : 12) * DP;
 	}
 
 	/**
