@@ -1,0 +1,21 @@
+<resources>
+
+	<string name="app_name">StepperView Demo</string>
+
+	<!-- Donate dialog -->
+	<string name="donate_dialog_title">Support me</string>
+	<string name="donate_dialog_message">If you like this library project and you are willing to support me, you can donate me via Alipay or PayPal.\n\nAlipay: fythonx\@gmail.com\nPayPal: Click PAYPAL button to open a new tab.</string>
+	<string name="doante_dialog_paypal_button">PayPal</string>
+
+	<!-- Navigation Menu -->
+	<string name="item_vertical_stepper">Vertical Stepper (Item View)</string>
+	<string name="item_vertical_stepper_adapter">Vertical Stepper (Adapter)</string>
+
+	<!-- Vertical Stepper View Sample Item -->
+	<string name="content_step_0">This is the first step. Click OK button to next step.\n\nTest Message.</string>
+	<string name="content_step_1">This is the second step. Click OK button to next step or Cancel button to previous step.\n\nThe summary text of each step is optional. If you haven\'t set, summary view won\'t be displayed.</string>
+	<string name="content_step_2">This is the last step. You can finish steps now.</string>
+
+	<string name="toggle_animation_button">Toggle Animation</string>
+
+</resources>

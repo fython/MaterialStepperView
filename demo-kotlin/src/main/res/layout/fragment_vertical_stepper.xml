@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+	<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:animateLayoutChanges="true">
+
+		<moe.feng.common.stepperview.VerticalStepperItemView
+				android:id="@+id/stepper_0"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="24dp"
+				app:step_index="1"
+				app:step_title="Step 1"
+				app:step_summary="Summarized if needed"
+				app:step_summary_done="Summarized if needed. Done"
+				app:step_state="selected">
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="12dp"
+						android:text="@string/content_step_0"/>
+
+				<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="16dp"
+						android:orientation="horizontal">
+
+					<Button
+							android:id="@+id/button_next_0"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:backgroundTint="@color/material_blue_500"
+							android:textColor="@android:color/white"
+							android:text="@android:string/ok"/>
+
+					<Button
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="8dp"
+							android:text="@android:string/cancel"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+		</moe.feng.common.stepperview.VerticalStepperItemView>
+
+		<moe.feng.common.stepperview.VerticalStepperItemView
+				android:id="@+id/stepper_1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				app:step_index="2"
+				app:step_title="Step 2">
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="12dp"
+						android:text="@string/content_step_1"/>
+
+				<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="16dp"
+						android:orientation="horizontal">
+
+					<Button
+							android:id="@+id/button_next_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:backgroundTint="@color/material_blue_500"
+							android:textColor="@android:color/white"
+							android:text="@android:string/ok"/>
+
+					<Button
+							android:id="@+id/button_prev_1"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="8dp"
+							android:text="@android:string/cancel"/>
+
+					<Button
+							android:id="@+id/button_test_error"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="8dp"
+							android:backgroundTint="@color/material_red_500"
+							android:textColor="@android:color/white"
+							android:text="Set Step 1 Error Text"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+		</moe.feng.common.stepperview.VerticalStepperItemView>
+
+		<moe.feng.common.stepperview.VerticalStepperItemView
+				android:id="@+id/stepper_2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="8dp"
+				app:step_index="3"
+				app:step_title="Step 3"
+				app:step_summary="Last step"
+				app:step_summary_done="Last step. Done"
+				app:step_is_last="true">
+
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="12dp"
+						android:text="@string/content_step_2"/>
+
+				<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="16dp"
+						android:orientation="horizontal">
+
+					<Button
+							android:id="@+id/button_next_2"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:backgroundTint="@color/material_blue_500"
+							android:textColor="@android:color/white"
+							android:text="@android:string/ok"/>
+
+					<Button
+							android:id="@+id/button_prev_2"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="8dp"
+							android:text="@android:string/cancel"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+		</moe.feng.common.stepperview.VerticalStepperItemView>
+
+		<Button
+				android:id="@+id/btn_change_point_color"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_margin="24dp"
+				android:text="Change point activated color"/>
+
+		<Button
+				android:id="@+id/btn_change_done_icon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="24dp"
+				android:text="Change point done icon"/>
+
+	</LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

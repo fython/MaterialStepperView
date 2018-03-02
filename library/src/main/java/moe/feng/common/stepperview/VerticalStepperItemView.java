@@ -43,7 +43,8 @@ public class VerticalStepperItemView extends FrameLayout {
 	/**
 	 * Step state
 	 */
-	private CharSequence mTitle, mSummary, mSummaryFinished = null;
+	private CharSequence mTitle;
+	private @Nullable CharSequence mSummary, mSummaryFinished = null;
 	private int mIndex = 1;
 	private boolean isLastStep = false;
 	private int mState = STATE_NORMAL;
@@ -67,15 +68,15 @@ public class VerticalStepperItemView extends FrameLayout {
 
 	private final int DP;
 
-	public VerticalStepperItemView(Context context) {
+	public VerticalStepperItemView(@NonNull Context context) {
 		this(context, null);
 	}
 
-	public VerticalStepperItemView(Context context, AttributeSet attrs) {
+	public VerticalStepperItemView(@NonNull Context context, @Nullable AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 
-	public VerticalStepperItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+	public VerticalStepperItemView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 
 		prepareViews(context);
@@ -138,9 +139,9 @@ public class VerticalStepperItemView extends FrameLayout {
 		mCustomView.removeAllViews();
 	}
 
-	private void prepareViews(Context context) {
+	private void prepareViews(@NonNull Context context) {
 		// Inflate and find views
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		LayoutInflater inflater = LayoutInflater.from(context);
 		View inflateView = inflater.inflate(R.layout.vertical_stepper_item_view_layout, null);
 		mPointBackground = inflateView.findViewById(R.id.stepper_point_background);
 		mLineView = inflateView.findViewById(R.id.stepper_line);
@@ -302,7 +303,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return The title of this step
 	 */
-	public CharSequence getTitle() {
+	public @NonNull CharSequence getTitle() {
 		return mTitle;
 	}
 
@@ -383,7 +384,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return The summary of this step
 	 */
-	public CharSequence getSummary() {
+	public @Nullable CharSequence getSummary() {
 		return mSummary;
 	}
 
@@ -412,7 +413,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return The summary of this step
 	 */
-	public CharSequence getSummaryFinished() {
+	public @Nullable CharSequence getSummaryFinished() {
 		return mSummaryFinished;
 	}
 
@@ -497,7 +498,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @param drawable Done icon drawable
 	 */
-	public void setDoneIcon(Drawable drawable) {
+	public void setDoneIcon(@NonNull Drawable drawable) {
 		mDoneIcon = drawable;
 		mDoneIconView.setImageDrawable(drawable);
 	}
@@ -516,7 +517,7 @@ public class VerticalStepperItemView extends FrameLayout {
 	 *
 	 * @return Done icon drawable
 	 */
-	public Drawable getDoneIcon() {
+	public @NonNull Drawable getDoneIcon() {
 		return mDoneIcon;
 	}
 
@@ -590,8 +591,10 @@ public class VerticalStepperItemView extends FrameLayout {
 	public boolean prevStep() {
 		if (canPrevStep()) {
 			setState(STATE_NORMAL);
-			mPrevItemView.setState(STATE_SELECTED);
-			return true;
+            if (mPrevItemView != null) {
+                mPrevItemView.setState(STATE_SELECTED);
+            }
+            return true;
 		}
 		return false;
 	}
@@ -613,8 +616,10 @@ public class VerticalStepperItemView extends FrameLayout {
 	public boolean nextStep() {
 		if (canNextStep()) {
 			setState(STATE_DONE);
-			mNextItemView.setState(STATE_SELECTED);
-			return true;
+            if (mNextItemView != null) {
+                mNextItemView.setState(STATE_SELECTED);
+            }
+            return true;
 		}
 		return false;
 	}
@@ -767,6 +772,7 @@ public class VerticalStepperItemView extends FrameLayout {
 		state.errorText = mErrorText;
 		state.lineColor = mLineColor;
 		state.errorColor = mErrorColor;
+		state.alwaysShowSummary = mAlwaysShowSummary;
 		bundle.putParcelable(ItemViewState.STATE, state);
 		return bundle;
 	}
@@ -790,6 +796,7 @@ public class VerticalStepperItemView extends FrameLayout {
 			setErrorText(viewState.errorText);
 			setLineColor(viewState.lineColor);
 			setErrorColor(viewState.errorColor);
+			setAlwaysShowSummary(viewState.alwaysShowSummary);
 			return;
 		}
 		super.onRestoreInstanceState(BaseSavedState.EMPTY_STATE);

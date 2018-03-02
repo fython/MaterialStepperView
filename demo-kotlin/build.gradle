@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+	compileSdkVersion rootProject.ext.targetSdkVersion
+	buildToolsVersion rootProject.ext.buildToolsVersion
+
+	defaultConfig {
+		minSdkVersion rootProject.ext.minSdkVersion
+		targetSdkVersion rootProject.ext.targetSdkVersion
+		versionCode rootProject.ext.versionCode
+		versionName rootProject.ext.versionName
+		applicationId "moe.feng.common.stepperview.demo"
+
+		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+	}
+	buildTypes {
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+	sourceSets {
+		main {
+			java.srcDirs += 'src/main/kotlin'
+		}
+	}
+}
+
+dependencies {
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+		exclude group: 'com.android.support', module: 'support-annotations'
+	})
+	testImplementation 'junit:junit:4.12'
+
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+	implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+	implementation "com.android.support:design:$supportLibraryVersion"
+	implementation "com.android.support:customtabs:$supportLibraryVersion"
+	implementation 'moe.feng:AlipayZeroSdk:1.1'
+	implementation project(':library')
+}

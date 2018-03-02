@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	
+	<color name="colorPrimary">@color/material_blue_500</color>
+	<color name="colorPrimaryDark">@color/material_blue_700</color>
+	<color name="colorAccent">@color/material_deep_purple_a200</color>
+
+	<color name="material_blue_500">#2196F3</color>
+	<color name="material_blue_700">#1976D2</color>
+
+	<color name="material_deep_purple_500">#673AB7</color>
+	<color name="material_deep_purple_a200">#7C4DFF</color>
+
+	<color name="material_lime_a200">#EEFF41</color>
+	
+</resources>

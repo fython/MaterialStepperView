@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<group android:checkableBehavior="single">
+
+		<item android:id="@+id/item_vertical_stepper"
+		      android:title="@string/item_vertical_stepper"
+			  android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+			  android:checked="true"/>
+
+		<item android:id="@+id/item_vertical_stepper_adapter"
+		      android:title="@string/item_vertical_stepper_adapter"
+		      android:icon="@drawable/ic_format_list_bulleted_black_24dp"/>
+
+	</group>
+
+	<item android:title="About">
+
+		<menu>
+
+			<item android:id="@+id/action_alipay_donate"
+			      android:title="Donate me"
+			      android:icon="@drawable/ic_thumb_up_black_24dp"/>
+
+			<item android:id="@+id/action_fork_on_github"
+			      android:title="Fork on Github"
+			      android:icon="@drawable/ic_open_in_new_black_24dp"/>
+
+		</menu>
+
+	</item>
+
+</menu>
