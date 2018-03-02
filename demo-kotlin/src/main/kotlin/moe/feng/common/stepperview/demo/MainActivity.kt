@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity() {
         mNavigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, mVerticalStepperDemoFragment).commit()
+            replaceFragment(mVerticalStepperDemoFragment)
         }
     }
 

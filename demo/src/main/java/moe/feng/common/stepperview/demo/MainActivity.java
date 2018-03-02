@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		mNavigationView = findViewById(R.id.navigation_view);
 		mNavigationView.setNavigationItemSelectedListener(this);
 
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.container, mVerticalStepperDemoFragment).commit();
+        if (savedInstanceState == null) {
+            replaceFragment(mVerticalStepperDemoFragment);
+        }
 	}
 
 	@Override
