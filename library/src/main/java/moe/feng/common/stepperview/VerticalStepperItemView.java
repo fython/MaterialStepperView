@@ -162,8 +162,12 @@ public class VerticalStepperItemView extends FrameLayout {
 			@Override
 			public void onGlobalLayout() {
 				int singleLineHeight = mTitleText.getMeasuredHeight();
-				ViewGroup.MarginLayoutParams mlp = (MarginLayoutParams) mTitleText.getLayoutParams();
-				mlp.topMargin = (mPointFrame.getMeasuredHeight() - singleLineHeight) / 2;
+				int topMargin = (mPointFrame.getMeasuredHeight() - singleLineHeight) / 2;
+				// Only update top margin when it is positive, preventing titles being truncated.
+				if (topMargin > 0) {
+					ViewGroup.MarginLayoutParams mlp = (MarginLayoutParams) mTitleText.getLayoutParams();
+					mlp.topMargin = topMargin;
+				}
 			}
 		});
 	}
