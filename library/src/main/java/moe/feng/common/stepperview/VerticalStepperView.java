@@ -3,15 +3,18 @@ package moe.feng.common.stepperview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import moe.feng.common.stepperview.internal.VerticalSpaceItemDecoration;
 
 public class VerticalStepperView extends FrameLayout implements IStepperView {
@@ -93,7 +96,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 *
 	 * @param stepperAdapter Stepper Adapter
 	 */
-	public void setStepperAdapter(IStepperAdapter stepperAdapter) {
+	public void setStepperAdapter(@NonNull IStepperAdapter stepperAdapter) {
 		mStepperAdapter = stepperAdapter;
 		updateSteppers();
 	}
@@ -102,7 +105,7 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * Notify the stepper adapter changed
 	 */
 	public void updateSteppers() {
-		if ((mErrorTexts != null && mErrorTexts.length != mStepperAdapter.size()) || mErrorTexts == null) {
+		if (mErrorTexts == null || mErrorTexts.length != mStepperAdapter.size()) {
 			mErrorTexts = new String[mStepperAdapter.size()];
 		}
 		mAdapter.notifyDataSetChanged();
@@ -148,7 +151,8 @@ public class VerticalStepperView extends FrameLayout implements IStepperView {
 	 * @param index Index
 	 * @return Error text or null (means no error)
 	 */
-	public @Nullable CharSequence getErrorText(int index) {
+	@Nullable
+	public CharSequence getErrorText(int index) {
 		if (mErrorTexts != null) {
 			return mErrorTexts[index];
 		}

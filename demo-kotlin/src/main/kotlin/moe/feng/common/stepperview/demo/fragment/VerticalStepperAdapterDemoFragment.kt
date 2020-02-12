@@ -2,14 +2,14 @@ package moe.feng.common.stepperview.demo.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 
 import moe.feng.common.stepperview.IStepperAdapter
 import moe.feng.common.stepperview.VerticalStepperItemView

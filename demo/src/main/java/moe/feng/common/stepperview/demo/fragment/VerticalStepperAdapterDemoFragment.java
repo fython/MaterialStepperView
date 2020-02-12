@@ -2,16 +2,19 @@ package moe.feng.common.stepperview.demo.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
+
 import moe.feng.common.stepperview.IStepperAdapter;
 import moe.feng.common.stepperview.VerticalStepperItemView;
 import moe.feng.common.stepperview.VerticalStepperView;
@@ -33,12 +36,14 @@ public class VerticalStepperAdapterDemoFragment extends Fragment implements ISte
 	}
 
 	@Override
-	public @NonNull CharSequence getTitle(int index) {
+	@NonNull
+	public CharSequence getTitle(int index) {
 		return "Step " + index;
 	}
 
 	@Override
-	public @Nullable CharSequence getSummary(int index) {
+	@Nullable
+	public CharSequence getSummary(int index) {
 		switch (index) {
 			case 0:
 				return Html.fromHtml("Summarized if needed"

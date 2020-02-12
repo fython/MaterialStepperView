@@ -54,7 +54,7 @@ PayPal: [https://www.paypal.me/fython](https://www.paypal.me/fython)
 ```
 MIT License
 
-Copyright (c) 2017-2018 Fung Go (fython)
+Copyright (c) 2017-2020 Siubeng Fung (fython)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

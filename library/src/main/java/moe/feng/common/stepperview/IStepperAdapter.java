@@ -1,9 +1,10 @@
 package moe.feng.common.stepperview;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Base interface providing the adapter to populate steps inside of
@@ -22,7 +23,8 @@ public interface IStepperAdapter {
 	 * @param index The index of the title requested
 	 * @return A title for the requested step
 	 */
-	@NonNull CharSequence getTitle(int index);
+	@NonNull
+	CharSequence getTitle(int index);
 
 	/**
 	 * This method may be called by the VerticalStepperView to obtain a title string
@@ -32,7 +34,8 @@ public interface IStepperAdapter {
 	 * @param index The index of the summary requested
 	 * @return A summary for the requested step
 	 */
-	@Nullable CharSequence getSummary(int index);
+	@Nullable
+	CharSequence getSummary(int index);
 
 	/**
 	 * Get the count of steppers

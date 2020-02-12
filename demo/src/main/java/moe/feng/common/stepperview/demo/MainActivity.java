@@ -2,28 +2,33 @@ package moe.feng.common.stepperview.demo;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.customtabs.CustomTabsIntent;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.navigation.NavigationView;
+
 import moe.feng.alipay.zerosdk.AlipayZeroSdk;
 import moe.feng.common.stepperview.demo.fragment.VerticalStepperAdapterDemoFragment;
 import moe.feng.common.stepperview.demo.fragment.VerticalStepperDemoFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+		implements NavigationView.OnNavigationItemSelectedListener {
 
 	private DrawerLayout mDrawerLayout;
 	private NavigationView mNavigationView;
 
-	private Fragment mVerticalStepperDemoFragment = new VerticalStepperDemoFragment(),
-			mVerticalStepperAdapterDemoFragment = new VerticalStepperAdapterDemoFragment();
+	private Fragment mVerticalStepperDemoFragment = new VerticalStepperDemoFragment();
+	private Fragment mVerticalStepperAdapterDemoFragment = new VerticalStepperAdapterDemoFragment();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +107,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	}
 
 	private void openWebsite(String url) {
-		CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-		builder.setToolbarColor(getResources().getColor(R.color.colorPrimary));
-		builder.build().launchUrl(this, Uri.parse(url));
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		try {
+			startActivity(intent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

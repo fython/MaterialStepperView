@@ -1,8 +1,10 @@
 package moe.feng.common.stepperview.internal;
 
 import android.graphics.Rect;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @hide
@@ -16,7 +18,8 @@ public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
 	}
 
 	@Override
-	public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+	public void getItemOffsets(Rect outRect, @NonNull View view,
+							   @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
 		outRect.bottom = verticalSpaceHeight;
 	}
 

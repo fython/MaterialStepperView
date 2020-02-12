@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.*;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.*;
@@ -18,6 +17,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -42,7 +49,10 @@ public class VerticalStepperItemView extends FrameLayout {
 	 * Step state
 	 */
 	private CharSequence mTitle;
-	private @Nullable CharSequence mSummary, mSummaryFinished = null;
+	@Nullable
+	private CharSequence mSummary = null;
+	@Nullable
+	private CharSequence mSummaryFinished = null;
 	private int mIndex = 1;
 	private boolean isLastStep = false;
 	private int mState = STATE_NORMAL;
@@ -60,7 +70,8 @@ public class VerticalStepperItemView extends FrameLayout {
 	/**
 	 * The bind views
 	 */
-	private @Nullable VerticalStepperItemView mPrevItemView, mNextItemView;
+	@Nullable
+	private VerticalStepperItemView mPrevItemView, mNextItemView;
 
 	public static final int STATE_NORMAL = 0, STATE_SELECTED = 1, STATE_DONE = 2;
 

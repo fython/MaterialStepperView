@@ -1,7 +1,8 @@
 package moe.feng.common.stepperview;
 
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
+
+import androidx.annotation.ColorInt;
 
 /**
  * Base interface providing a view base of stepper component.
@@ -31,28 +32,32 @@ interface IStepperView {
 	 *
 	 * @return Normal Point Color
 	 */
-	@ColorInt int getNormalColor();
+	@ColorInt
+	int getNormalColor();
 
 	/**
 	 * Get activated point color
 	 *
 	 * @return Activated Point Color
 	 */
-	@ColorInt int getActivatedColor();
+	@ColorInt
+	int getActivatedColor();
 
 	/**
 	 * Get line color
 	 *
 	 * @return Line Color
 	 */
-	@ColorInt int getLineColor();
+	@ColorInt
+	int getLineColor();
 
 	/**
 	 * Get error highlight color
 	 *
 	 * @return Error Highlight Color
 	 */
-	@ColorInt int getErrorColor();
+	@ColorInt
+	int getErrorColor();
 
 	/**
 	 * Get animation duration
